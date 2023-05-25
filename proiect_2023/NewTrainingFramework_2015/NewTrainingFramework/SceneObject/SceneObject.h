@@ -1,0 +1,141 @@
+#pragma once
+#include "Resources.h"
+#include "Camera.h"
+#include <GLES2/gl2.h>
+#include <Utilities/Math.h>
+#include <string>
+
+class SceneObject {
+protected:
+	GLuint id;
+	GLuint modelId;
+	GLuint shaderId;
+	vector<GLuint> textureIds;
+	vector<GLuint> lightIds;
+	string type;
+	string name;
+	Vector3 color;
+	Vector3 position;
+	Vector3 rotation;
+	Vector3 scale;
+	Matrix matrix;
+	bool wired;
+	bool depthTest;
+
+public:
+	SceneObject() :
+		id(MAXUINT),
+		modelId(MAXUINT),
+		shaderId(MAXUINT),
+		type("normal"),
+		name("dummyObject"),
+		color(Vector3()),
+		position(Vector3()),
+		rotation(Vector3()),
+		scale(Vector3(1.0f, 1.0f, 1.0f)),
+		wired(false),
+		depthTest(false) 
+	{
+		UpdateTranformationMatrix();
+	}
+
+	SceneObject(
+		GLuint _id,
+		GLuint _modelId,
+		GLuint _shaderId,
+		vector<GLuint> _textureIds,
+		vector<GLuint> _lightIds,
+		string _type,
+		string _name,
+		Vector3 _position,
+		Vector3 _rotation,
+		Vector3 _scale,
+		bool _depthTest
+	) :
+		id(_id),
+		modelId(_modelId),
+		shaderId(_shaderId),
+		textureIds(_textureIds),
+		lightIds(_lightIds),
+		type(_type),
+		name(_name),
+		color(Vector3()),
+		position(_position),
+		rotation(_rotation),
+		scale(_scale),
+		wired(false),
+		depthTest(_depthTest)
+	{
+		UpdateTranformationMatrix();
+	}
+
+	SceneObject(
+		GLuint _id,
+		GLuint _modelId,
+		GLuint _shaderId,
+		string _type,
+		string _name,
+		Vector3 _color,
+		Vector3 _position,
+		Vector3 _rotation,
+		Vector3 _scale,
+		bool _wired,
+		bool _depthTest
+	) :
+		id(_id),
+		modelId(_modelId),
+		shaderId(_shaderId),
+		type(_type),
+		name(_name),
+		color(_color),
+		position(_position),
+		rotation(_rotation),
+		scale(_scale),
+		wired(_wired),
+		depthTest(_depthTest)
+	{
+		UpdateTranformationMatrix();
+	}
+
+	SceneObject(const SceneObject& obj) :
+		id(obj.id),
+		modelId(obj.modelId),
+		shaderId(),
+		textureIds(obj.textureIds),
+		type(obj.type),
+		name(obj.name),
+		color(obj.color),
+		position(obj.position),
+		rotation(obj.rotation),
+		scale(obj.scale),
+		wired(obj.wired),
+		depthTest(obj.depthTest)
+	{
+		UpdateTranformationMatrix();
+	}
+
+	void Draw(Camera* cam);
+	void Update(float deltaTimeSeconds);
+	void UpdateTranformationMatrix();
+	void SortTextures();
+
+	// Setters
+	void SetModelId(GLuint id)		{ this->modelId = id; }
+	void SetShaderId(GLuint id)		{ this->shaderId = id; }
+	void AddTextureId(GLuint id)	{ this->textureIds.push_back(id); }
+	void AddLightId(GLuint id)		{ this->lightIds.push_back(id); }
+	void SetType(string& type)		{ this->type = type; }
+	void SetName(string& name)		{ this->name = name; }
+	void SetColor(Vector3 col)		{ this->color = col; }
+	void SetPos(Vector3 pos)		{ this->position = pos; }
+	void SetRotation(Vector3 rot)	{ this->rotation = rot; }
+	void SetScale(Vector3 scale)	{ this->scale = scale; }
+	void SetDepthTest(bool val)		{ this->depthTest = val; }
+	void SetWired(bool val)			{ this->wired = val; }
+
+	// Getters
+	string	GetType()					{ return this->type; }
+	GLuint	GetModelId()				{ return this->modelId; }
+	Vector3 GetPosition()				{ return this->position; }
+	Matrix	getTransformationMatrix()	{ return this->matrix; }
+};
