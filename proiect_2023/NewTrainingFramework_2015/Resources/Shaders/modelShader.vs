@@ -25,6 +25,6 @@ void main()
 	v_frag_color = a_colL;
 	v_uv = a_uv;
 	v_world_pos = world_pos.xyz;
-	v_world_norm = a_norm;
+	v_world_norm = normalize(mat3(u_model) * a_norm);
 }
    
