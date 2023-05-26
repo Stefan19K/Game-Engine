@@ -99,6 +99,19 @@ struct TextureResource {
 
 class Model {
 private:
+	struct HitBox {
+		Vector3 vMin;
+		Vector3 vMax;
+		GLuint vbold;
+		GLuint ibold;
+		GLuint nrVertices;
+		GLuint nrIndices;
+		vector<Vertex> vertices;
+		vector<GLuint> indices;
+
+		HitBox() : vMin(Vector3()), vMax(Vector3()), vbold(0), ibold(0), nrVertices(0), nrIndices(0) {}
+	};
+
 	ModelResource* modelResource;
 	GLuint ibold;
 	GLuint wiredIbold;
@@ -109,8 +122,10 @@ private:
 	vector<Vertex> vertices;
 	vector<GLuint> indices;
 	vector<GLuint> wiredIndices;
+	HitBox* hitbox;
 
 	void LoadVertexData();
+	void LoadHitBoxData(Vector3& col);
 	void LoadVerticesIndices();
 	void LoadWiredIndices();
 
@@ -122,7 +137,8 @@ public:
 		vbold(0),
 		nrVertices(0),
 		nrIndices(0),
-		nrWiredIndices(0) {}
+		nrWiredIndices(0),
+		hitbox(new HitBox()) {}
 
 	Model(ModelResource* resource) :
 		modelResource(resource),
@@ -131,24 +147,26 @@ public:
 		vbold(0),
 		nrVertices(0),
 		nrIndices(0),
-		nrWiredIndices(0) {}
+		nrWiredIndices(0),
+		hitbox(new HitBox) {}
 
 	~Model() {}
 
-	void Load();
+	void Load(Vector3& col = Vector3());
 	GLint GenerateTerrain(GLint cellCount, GLfloat dimCell, GLfloat offsetY);
 
 	// Getters
-	ModelResource* GetModelResource() { return this->modelResource; }
-	GLuint GetIbold() { return this->ibold; }
-	GLuint GetWiredIbold() { return this->wiredIbold; }
-	GLuint GetVbold() { return this->vbold; }
-	GLuint GetNrVertices() { return this->nrVertices; }
-	GLuint GetNrIndices() { return this->nrIndices; }
-	GLuint GetNrWiredIndices() { return this->nrWiredIndices; }
-	vector<Vertex> GetVertices() { return this->vertices; }
-	vector<GLuint> GetIndices() { return this->indices; }
-	vector<GLuint> GetWiredIndices() { return this->wiredIndices; }
+	ModelResource*	GetModelResource()	{ return this->modelResource; }
+	GLuint			GetIbold()			{ return this->ibold; }
+	GLuint			GetWiredIbold()		{ return this->wiredIbold; }
+	GLuint			GetVbold()			{ return this->vbold; }
+	GLuint			GetNrVertices()		{ return this->nrVertices; }
+	GLuint			GetNrIndices()		{ return this->nrIndices; }
+	GLuint			GetNrWiredIndices()	{ return this->nrWiredIndices; }
+	vector<Vertex>	GetVertices()		{ return this->vertices; }
+	vector<GLuint>	GetIndices()		{ return this->indices; }
+	vector<GLuint>	GetWiredIndices()	{ return this->wiredIndices; }
+	HitBox*			GetHitbox()			{ return this->hitbox; }
 
 	// Show structure data
 	void print()

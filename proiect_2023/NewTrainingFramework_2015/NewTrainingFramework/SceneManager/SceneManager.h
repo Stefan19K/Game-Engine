@@ -67,6 +67,7 @@ namespace sceneManager {
 		ROTATE_CAMERA_NEGATIVE_X,
 		ROTATE_CAMERA_POSITIVE_Y,
 		ROTATE_CAMERA_NEGATIVE_Y,
+		SWITCH_DEBUG_MODE,
 		ACTION_COUNT
 	};
 
@@ -88,6 +89,8 @@ namespace sceneManager {
 
 		AmbientLight* ambLight;
 		map<GLuint, Light*> lights;
+
+		bool debugMode;
 
 		void ReadConfigFile();
 		void LoadProjectName(xml_node<>* root);

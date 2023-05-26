@@ -21,7 +21,7 @@ public:
 		uvOffset(Vector2()),
 		SceneObject() {}
 
-	TerrainObject(
+	/*TerrainObject(
 		GLuint _id,
 		GLuint _modelId,
 		GLuint _shaderId,
@@ -75,7 +75,7 @@ public:
 		offsetY(_offsetY),
 		height(_height),
 		uvOffset(Vector2()),
-		SceneObject(_id, _modelId, _shaderId, _type, _name, _color, _position, _rotation, _scale, _wired, _depthTest) {}
+		SceneObject(_id, _modelId, _shaderId, _type, _name, _color, _position, _rotation, _scale, _wired, _depthTest) {}*/
 
 	void Draw(Camera* cam);
 	void Update(GLfloat deltaTime);

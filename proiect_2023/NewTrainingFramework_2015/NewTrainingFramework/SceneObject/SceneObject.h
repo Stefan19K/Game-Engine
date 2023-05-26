@@ -15,6 +15,7 @@ protected:
 	string type;
 	string name;
 	Vector3 color;
+	Vector3 hitBoxColor;
 	Vector3 position;
 	Vector3 rotation;
 	Vector3 scale;
@@ -30,6 +31,7 @@ public:
 		type("normal"),
 		name("dummyObject"),
 		color(Vector3()),
+		hitBoxColor(Vector3()),
 		position(Vector3()),
 		rotation(Vector3()),
 		scale(Vector3(1.0f, 1.0f, 1.0f)),
@@ -60,6 +62,7 @@ public:
 		type(_type),
 		name(_name),
 		color(Vector3()),
+		hitBoxColor(Vector3()),
 		position(_position),
 		rotation(_rotation),
 		scale(_scale),
@@ -76,6 +79,7 @@ public:
 		string _type,
 		string _name,
 		Vector3 _color,
+		Vector3 _hitBoxColor,
 		Vector3 _position,
 		Vector3 _rotation,
 		Vector3 _scale,
@@ -88,6 +92,7 @@ public:
 		type(_type),
 		name(_name),
 		color(_color),
+		hitBoxColor(_hitBoxColor),
 		position(_position),
 		rotation(_rotation),
 		scale(_scale),
@@ -105,6 +110,7 @@ public:
 		type(obj.type),
 		name(obj.name),
 		color(obj.color),
+		hitBoxColor(obj.hitBoxColor),
 		position(obj.position),
 		rotation(obj.rotation),
 		scale(obj.scale),
@@ -115,27 +121,30 @@ public:
 	}
 
 	void Draw(Camera* cam);
+	void DrawDebugMode();
 	void Update(float deltaTimeSeconds);
 	void UpdateTranformationMatrix();
 	void SortTextures();
 
 	// Setters
-	void SetModelId(GLuint id)		{ this->modelId = id; }
-	void SetShaderId(GLuint id)		{ this->shaderId = id; }
-	void AddTextureId(GLuint id)	{ this->textureIds.push_back(id); }
-	void AddLightId(GLuint id)		{ this->lightIds.push_back(id); }
-	void SetType(string& type)		{ this->type = type; }
-	void SetName(string& name)		{ this->name = name; }
-	void SetColor(Vector3 col)		{ this->color = col; }
-	void SetPos(Vector3 pos)		{ this->position = pos; }
-	void SetRotation(Vector3 rot)	{ this->rotation = rot; }
-	void SetScale(Vector3 scale)	{ this->scale = scale; }
-	void SetDepthTest(bool val)		{ this->depthTest = val; }
-	void SetWired(bool val)			{ this->wired = val; }
+	void SetModelId(GLuint id)			{ this->modelId = id; }
+	void SetShaderId(GLuint id)			{ this->shaderId = id; }
+	void AddTextureId(GLuint id)		{ this->textureIds.push_back(id); }
+	void AddLightId(GLuint id)			{ this->lightIds.push_back(id); }
+	void SetType(string& type)			{ this->type = type; }
+	void SetName(string& name)			{ this->name = name; }
+	void SetColor(Vector3 col)			{ this->color = col; }
+	void SetHitBoxColor(Vector3 col)	{ this->hitBoxColor = col; }
+	void SetPos(Vector3 pos)			{ this->position = pos; }
+	void SetRotation(Vector3 rot)		{ this->rotation = rot; }
+	void SetScale(Vector3 scale)		{ this->scale = scale; }
+	void SetDepthTest(bool val)			{ this->depthTest = val; }
+	void SetWired(bool val)				{ this->wired = val; }
 
 	// Getters
 	string	GetType()					{ return this->type; }
 	GLuint	GetModelId()				{ return this->modelId; }
 	Vector3 GetPosition()				{ return this->position; }
+	Vector3 GetHitBoxColor()			{ return this->hitBoxColor; }
 	Matrix	getTransformationMatrix()	{ return this->matrix; }
 };

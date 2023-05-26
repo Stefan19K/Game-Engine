@@ -12,9 +12,9 @@
 		-->
 	</defaultScreenSize>
 	<backgroundColor>
-		<r>0.0</r>
-		<g>0.0</g>
-		<b>0.0</b>
+		<r>0.5</r>
+		<g>0.5</g>
+		<b>0.5</b>
 	</backgroundColor>
 	<fog>
 		<r>300.0</r>
@@ -73,6 +73,10 @@
 		<control>
 			<key>U</key>
 			<action>ROTATE_CAMERA_POSITIVE_Y</action>
+		</control>
+		<control>
+			<key>r</key>
+			<action>SWITCH_DEBUG_MODE</action>
 		</control>
 		<!-- adaugati restul -->
 	</controls>
@@ -142,7 +146,7 @@
 			<bboxColor>
 				<r>0.0</r>
 				<g>0.0</g>
-				<b>0.0</b>
+				<b>1.0</b>
 			</bboxColor>
 			<!--
 			Exemple de alte configurari care vor fi adaugate si parsate mai tarziu (pentru taskuri ulterioare)

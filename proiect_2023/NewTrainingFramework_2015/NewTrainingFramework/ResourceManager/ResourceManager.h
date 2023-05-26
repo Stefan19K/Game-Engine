@@ -56,12 +56,12 @@ namespace resourceManager {
 		/// </summary>
 		/// <param name="id">Id of the resource needed</param>
 		/// <returns>A pointer to the resource</returns>
-		Model* LoadModel(const GLuint id);
+		Model* LoadModel(const GLuint id, Vector3& col = Vector3());
 		Shader* LoadShader(const GLuint id);
 		Texture* LoadTexture(const GLuint id);
 
 		Model* GenerateModel(GLuint* id, GLint cellCount, GLfloat dimCell, GLfloat offsetY);
-		void LoadData(const GLuint id, string& resource);
+		void LoadData(const GLuint id, string& resource, Vector3& col = Vector3());
 		void FreeResources();//eliberarea zonelor de memorie alocate
 		// void UpdateModelUV(GLuint id, int param, GLfloat offset);
 

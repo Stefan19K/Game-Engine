@@ -201,6 +201,8 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\colorShader.fs" />
     <None Include="..\Resources\Shaders\colorShader.vs" />
+    <None Include="..\Resources\Shaders\debugShader.fs" />
+    <None Include="..\Resources\Shaders\debugShader.vs" />
     <None Include="..\Resources\Shaders\fireShader.fs" />
     <None Include="..\Resources\Shaders\fireShader.vs" />
     <None Include="..\Resources\Shaders\modelShader.fs" />

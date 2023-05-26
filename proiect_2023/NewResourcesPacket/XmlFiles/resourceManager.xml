@@ -79,6 +79,10 @@
 				<vs>colorShader.vs</vs>
 				<fs>colorShader.fs</fs>
 			</shader>
+			<shader id="0">
+				<vs>debugShader.vs</vs>
+				<fs>debugShader.fs</fs>
+			</shader>
 		<!-- si aici se adauga toate shaderele -->
 		</folder>
 	</shaders>

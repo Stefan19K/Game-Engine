@@ -7,6 +7,34 @@ void Model::LoadVertexData()
 	LoadWiredIndices();
 }
 
+void Model::LoadHitBoxData(Vector3& col)
+{
+	Vector3 min = hitbox->vMin;
+	Vector3 max = hitbox->vMax;
+
+	hitbox->nrVertices = 8;
+	hitbox->vertices = vector<Vertex>(hitbox->nrVertices);
+	hitbox->vertices[0].pos = Vector3(min.x, min.y, min.z);
+	hitbox->vertices[1].pos = Vector3(max.x, min.y, min.z);
+	hitbox->vertices[2].pos = Vector3(max.x, min.y, max.z);
+	hitbox->vertices[3].pos = Vector3(min.x, min.y, max.z);
+
+	hitbox->vertices[4].pos = Vector3(min.x, max.y, min.z);
+	hitbox->vertices[5].pos = Vector3(max.x, max.y, min.z);
+	hitbox->vertices[6].pos = Vector3(max.x, max.y, max.z);
+	hitbox->vertices[7].pos = Vector3(min.x, max.y, max.z);
+
+	for (int i = 0; i < hitbox->nrVertices; i++)
+		hitbox->vertices[i].col = col;
+
+	hitbox->nrIndices = 24;
+	hitbox->indices = { 
+		0, 1, 1, 2, 2, 3, 3, 0,
+		0, 4, 1, 5, 2, 6, 3, 7,
+		4, 5, 5, 6, 6, 7, 7, 4
+	};
+}
+
 void Model::LoadVerticesIndices()
 {
 	std::string line;
@@ -44,6 +72,21 @@ void Model::LoadVerticesIndices()
 					vertex.pos.x = x;
 					vertex.pos.y = y;
 					vertex.pos.z = z;
+
+					// set the lowest and highest vertices for hitbox
+					if (i == 0) {
+						hitbox->vMin = Vector3(x, y, z);
+						hitbox->vMax = Vector3(x, y, z);
+					}
+					else {
+						hitbox->vMin.x = x < hitbox->vMin.x ? x : hitbox->vMin.x;
+						hitbox->vMin.y = y < hitbox->vMin.y ? y : hitbox->vMin.y;
+						hitbox->vMin.z = z < hitbox->vMin.z ? z : hitbox->vMin.z;
+
+						hitbox->vMax.x = x > hitbox->vMax.x ? x : hitbox->vMax.x;
+						hitbox->vMax.y = y > hitbox->vMax.y ? y : hitbox->vMax.y;
+						hitbox->vMax.z = z > hitbox->vMax.z ? z : hitbox->vMax.z;
+					}
 				}
 				else if (attribute == "norm") {
 					vertex.norm.x = x;
@@ -106,9 +149,10 @@ void Model::LoadWiredIndices()
 	}
 }
 
-void Model::Load()
+void Model::Load(Vector3& col)
 {
 	LoadVertexData();
+	LoadHitBoxData(col);
 
 	// buffer object
 	glGenBuffers(1, &vbold);
@@ -126,6 +170,19 @@ void Model::Load()
 	glGenBuffers(1, &wiredIbold);
 	glBindBuffer(GL_ARRAY_BUFFER, wiredIbold);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(wiredIndices[0]) * nrWiredIndices, wiredIndices.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Hitbox object
+	// buffer object
+	glGenBuffers(1, &hitbox->vbold);
+	glBindBuffer(GL_ARRAY_BUFFER, hitbox->vbold);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(hitbox->vertices[0]) * hitbox->nrVertices, hitbox->vertices.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// index object
+	glGenBuffers(1, &hitbox->ibold);
+	glBindBuffer(GL_ARRAY_BUFFER, hitbox->ibold);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(hitbox->indices[0]) * hitbox->nrIndices, hitbox->indices.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

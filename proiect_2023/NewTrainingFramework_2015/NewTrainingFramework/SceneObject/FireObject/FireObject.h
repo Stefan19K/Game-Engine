@@ -12,7 +12,7 @@ public:
 		time(0.0f),
 		SceneObject() {}
 
-	FireObject(
+	/*FireObject(
 		GLuint _id,
 		GLuint _modelId,
 		GLuint _shaderId,
@@ -48,7 +48,7 @@ public:
 	) :
 		dispMax(_dispMax),
 		time(_time),
-		SceneObject(_id, _modelId, _shaderId, _type, _name, _color, _position, _rotation, _scale, _wired, _depthTest) {}
+		SceneObject(_id, _modelId, _shaderId, _type, _name, _color, _position, _rotation, _scale, _wired, _depthTest) {}*/
 
 	void Draw(Camera* cam);
 	void Update(GLfloat deltaTime);

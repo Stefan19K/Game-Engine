@@ -255,10 +255,21 @@ void SceneManager::LoadNormalObject(xml_node<>* root, GLuint id)
 
 	obj->SetType(string("normal"));
 
+	node = root->first_node("bboxColor");
+	if (node) {
+		obj->SetHitBoxColor(
+			Vector3(
+				atof((node->first_node("r"))->value()),
+				atof((node->first_node("g"))->value()),
+				atof((node->first_node("b"))->value())
+			)
+		);
+	}
+
 	node = root->first_node("model");
 	if (node) {
 		GLuint modelId = atoi(node->value());
-		ResourceManager::GetInstance()->LoadData(modelId, string("model"));
+		ResourceManager::GetInstance()->LoadData(modelId, string("model"), obj->GetHitBoxColor());
 		obj->SetModelId(modelId);
 	}
 
@@ -355,6 +366,17 @@ void SceneManager::LoadTerrainObject(xml_node<>* root, GLuint id)
 
 	obj->SetType(string("terrain"));
 
+	node = root->first_node("bboxColor");
+	if (node) {
+		obj->SetHitBoxColor(
+			Vector3(
+				atof((node->first_node("r"))->value()),
+				atof((node->first_node("g"))->value()),
+				atof((node->first_node("b"))->value())
+			)
+		);
+	}
+
 	node = root->first_node("cellCount");
 	if (node) {
 		obj->SetCellCount(atoi(node->value()));
@@ -386,7 +408,7 @@ void SceneManager::LoadTerrainObject(xml_node<>* root, GLuint id)
 			node = root->first_node("model");
 			if (node) {
 				modelId = atoi(node->value());
-				ResourceManager::GetInstance()->LoadData(modelId, string("model"));
+				ResourceManager::GetInstance()->LoadData(modelId, string("model"), obj->GetHitBoxColor());
 				obj->SetModelId(modelId);
 			}
 		}
@@ -502,6 +524,17 @@ void SceneManager::LoadSkyBoxObject(xml_node<>* root, GLuint id)
 
 	obj->SetType(string("skybox"));
 
+	node = root->first_node("bboxColor");
+	if (node) {
+		obj->SetHitBoxColor(
+			Vector3(
+				atof((node->first_node("r"))->value()),
+				atof((node->first_node("g"))->value()),
+				atof((node->first_node("b"))->value())
+			)
+		);
+	}
+
 	node = root->first_node("offsetY");
 	if (node) {
 		obj->SetOffsetY(atof(node->value()));
@@ -512,7 +545,7 @@ void SceneManager::LoadSkyBoxObject(xml_node<>* root, GLuint id)
 		GLuint modelId;
 
 		modelId = atoi(node->value());
-		ResourceManager::GetInstance()->LoadData(modelId, string("model"));
+		ResourceManager::GetInstance()->LoadData(modelId, string("model"), obj->GetHitBoxColor());
 		obj->SetModelId(modelId);
 	}
 
@@ -613,19 +646,30 @@ void SceneManager::LoadFireObject(xml_node<>* root, GLuint id)
 	xml_node<>* node = nullptr;
 	FireObject* obj = new FireObject();
 
+	obj->SetType(string("fire"));
+
+	node = root->first_node("bboxColor");
+	if (node) {
+		obj->SetHitBoxColor(
+			Vector3(
+				atof((node->first_node("r"))->value()),
+				atof((node->first_node("g"))->value()),
+				atof((node->first_node("b"))->value())
+			)
+		);
+	}
+
 	node = root->first_node("dispMax");
 	if (node) {
 		obj->SetDispMax(atof(node->value()));
 	}
-
-	obj->SetType(string("fire"));
 
 	node = root->first_node("model");
 	if (node) {
 		GLuint modelId;
 
 		modelId = atoi(node->value());
-		ResourceManager::GetInstance()->LoadData(modelId, string("model"));
+		ResourceManager::GetInstance()->LoadData(modelId, string("model"), obj->GetHitBoxColor());
 		obj->SetModelId(modelId);
 	}
 
@@ -815,6 +859,10 @@ Action SceneManager::GetActionType(const string& str)
 
 	if (str == "ROTATE_CAMERA_NEGATIVE_Y")
 		return ROTATE_CAMERA_NEGATIVE_Y;
+
+	// debug mode
+	if (str == "SWITCH_DEBUG_MODE")
+		return SWITCH_DEBUG_MODE;
 }
 
 SceneManager* SceneManager::GetInstance()
@@ -827,6 +875,8 @@ SceneManager* SceneManager::GetInstance()
 
 void SceneManager::Init()
 {
+	debugMode = false;
+
 	ReadConfigFile();
 	glClearColor(bckgrColor.x, bckgrColor.y, bckgrColor.z, 1.0f);
 	glEnable(GL_DEPTH_TEST);
@@ -838,16 +888,31 @@ void SceneManager::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (const auto& object : objects) {
-		if (object.second->GetType() == "normal")
-			object.second->Draw(cameras.at(activeCameraId));
-		if (object.second->GetType() == "terrain")
-			((TerrainObject*)object.second)->Draw(cameras.at(activeCameraId));
-		if (object.second->GetType() == "skybox")
-			((SkyBoxObject*)object.second)->Draw(cameras.at(activeCameraId));
-		if (object.second->GetType() == "fire")
-			((FireObject*)object.second)->Draw(cameras.at(activeCameraId));
+	if (debugMode == false) {
+		for (const auto& object : objects) {
+			if (object.second->GetType() == "normal")
+				object.second->Draw(cameras.at(activeCameraId));
+			if (object.second->GetType() == "terrain")
+				((TerrainObject*)object.second)->Draw(cameras.at(activeCameraId));
+			if (object.second->GetType() == "skybox")
+				((SkyBoxObject*)object.second)->Draw(cameras.at(activeCameraId));
+			if (object.second->GetType() == "fire")
+				((FireObject*)object.second)->Draw(cameras.at(activeCameraId));
+		}
 	}
+	else {
+		for (const auto& object : objects) {
+			if (object.second->GetType() == "normal")
+				object.second->DrawDebugMode();
+			if (object.second->GetType() == "terrain")
+				((TerrainObject*)object.second)->DrawDebugMode();
+			if (object.second->GetType() == "skybox")
+				((SkyBoxObject*)object.second)->DrawDebugMode();
+			if (object.second->GetType() == "fire")
+				((FireObject*)object.second)->DrawDebugMode();
+		}
+	}
+	
 }
 
 void SceneManager::Update(GLfloat deltaTimeSeconds)
@@ -913,6 +978,9 @@ void SceneManager::Key(unsigned char key, bool bIsPressed)
 			break;
 		case sceneManager::ROTATE_CAMERA_NEGATIVE_Y:
 			this->cameras.at(this->activeCameraId)->rotateOY(-1.0f);
+			break;
+		case sceneManager::SWITCH_DEBUG_MODE:
+			this->debugMode ^= 1;
 			break;
 		case sceneManager::ACTION_COUNT:
 			break;

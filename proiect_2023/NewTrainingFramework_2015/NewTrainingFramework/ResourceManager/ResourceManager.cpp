@@ -194,11 +194,11 @@ GLenum ResourceManager::GetWrapMode(string& type)
 		return GL_MIRRORED_REPEAT;
 }
 
-Model* ResourceManager::LoadModel(const GLuint id)
+Model* ResourceManager::LoadModel(const GLuint id, Vector3& col)
 {
 	if (models.find(id) == models.end()) {
 		Model *newModel = new Model(modelResources.at(id));
-		newModel->Load();
+		newModel->Load(col);
 		models.insert(pair<GLuint, Model*>(id, newModel));
 	}
 
@@ -260,10 +260,10 @@ void ResourceManager::Init()
 		key.second->print();*/
 }
 
-void resourceManager::ResourceManager::LoadData(const GLuint id, string& resource)
+void resourceManager::ResourceManager::LoadData(const GLuint id, string& resource, Vector3& col)
 {
 	if (resource == "model")
-		LoadModel(id);
+		LoadModel(id, col);
 
 	if (resource == "shader")
 		LoadShader(id);
