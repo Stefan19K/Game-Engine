@@ -37,9 +37,6 @@
     <Filter Include="Source Files\SceneObject\FireObject">
       <UniqueIdentifier>{20495dba-b597-4cdf-94a8-b62e34a9934d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SceneObject\LightObject">
-      <UniqueIdentifier>{5b65bbfa-b846-410e-bc96-d2c34a626307}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NewTrainingFramework.cpp">

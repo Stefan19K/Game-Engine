@@ -11,6 +11,7 @@ varying vec3 v_frag_color;
 varying vec2 v_uv;
 varying vec3 v_world_pos;
 varying vec3 v_world_norm;
+varying vec3 v_norm;
 
 void main()
 {
@@ -26,5 +27,6 @@ void main()
 	v_uv = a_uv;
 	v_world_pos = world_pos.xyz;
 	v_world_norm = normalize(mat3(u_model) * a_norm);
+	v_norm = world_norm.xyz;
 }
    

@@ -888,6 +888,33 @@ void SceneManager::Draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glViewport(0, 0, width, height);
+	if (debugMode == false) {
+		for (const auto& object : objects) {
+			if (object.second->GetType() == "normal")
+				object.second->Draw(cameras.at(activeCameraId));
+			if (object.second->GetType() == "terrain")
+				((TerrainObject*)object.second)->Draw(cameras.at(activeCameraId));
+			if (object.second->GetType() == "skybox")
+				((SkyBoxObject*)object.second)->Draw(cameras.at(activeCameraId));
+			if (object.second->GetType() == "fire")
+				((FireObject*)object.second)->Draw(cameras.at(activeCameraId));
+		}
+	}
+	else {
+		for (const auto& object : objects) {
+			if (object.second->GetType() == "normal")
+				object.second->DrawDebugMode();
+			if (object.second->GetType() == "terrain")
+				((TerrainObject*)object.second)->DrawDebugMode();
+			if (object.second->GetType() == "skybox")
+				((SkyBoxObject*)object.second)->DrawDebugMode();
+			if (object.second->GetType() == "fire")
+				((FireObject*)object.second)->DrawDebugMode();
+		}
+	}
+
+	glViewport(0, 500, 400, 200);
 	if (debugMode == false) {
 		for (const auto& object : objects) {
 			if (object.second->GetType() == "normal")

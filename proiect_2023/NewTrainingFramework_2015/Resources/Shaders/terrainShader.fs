@@ -67,6 +67,79 @@ vec3 computeLight(Light light, vec3 object_color, vec3 world_pos, vec3 world_nor
 	 return color;
 }
 
+vec3 computeDirectionalLight(Light light, vec3 object_color, vec3 world_pos, vec3 world_normal)
+{
+    vec3 L = normalize( light.pos - v_world_pos );
+
+    vec3 N = normalize(v_world_norm);
+
+    vec3 V = normalize( u_cam_pos - v_world_pos );
+
+    vec3 R = reflect(-L, N);
+
+    float diffuse_light =  light.kd * max(dot(N, L), 0.0);
+
+    float specular_light = 0.0;
+
+    // It's important to distinguish between "reflection model" and
+    // "shading method". In this shader, we are experimenting with the Phong
+    // (1975) and Blinn-Phong (1977) reflection models, and we are using the
+    // Gouraud (1971) shading method. There is also the Phong (1975) shading
+    // method, which we'll use in the future. Don't mix them up!
+    if (diffuse_light > 0.0)
+    {
+        specular_light = light.ks * pow(max(dot(V, R), 0.0), 30.0);
+    }
+
+    vec3 color;
+    float d = distance(light.pos, v_world_pos);
+    float factor = 1.0 / (0.1 + 0.1 * d + 0.0 * pow(d, 2.0));
+
+    color = object_color * (diffuse_light * light.diffColor + specular_light * light.specColor) * factor;
+
+    return color;
+}
+
+vec3 computeSpotLight(Light light, vec3 object_color, vec3 world_pos, vec3 world_normal)
+{
+    vec3 L = normalize( light.pos - v_world_pos );
+
+    vec3 N = normalize(v_world_norm);
+
+    vec3 V = normalize( u_cam_pos - v_world_pos );
+
+    vec3 R = reflect(-L, N);
+
+    float diffuse_light =  light.kd * max(dot(N, L), 0.0);
+
+    float specular_light = 0.0;
+
+    // It's important to distinguish between "reflection model" and
+    // "shading method". In this shader, we are experimenting with the Phong
+    // (1975) and Blinn-Phong (1977) reflection models, and we are using the
+    // Gouraud (1971) shading method. There is also the Phong (1975) shading
+    // method, which we'll use in the future. Don't mix them up!
+    if (diffuse_light > 0.0)
+    {
+        specular_light = light.ks * pow(max(dot(V, R), 0.0), 30.0);
+    }
+
+    float cut_off = radians(light.spotAngle);
+    float spot_light = dot(-L, light.direction);
+    float spot_light_limit = cos(cut_off);
+    float linear_att = (spot_light - spot_light_limit) / (1.0 - spot_light_limit);
+    float light_att_factor = pow(linear_att, 2.0);
+
+    vec3 color;
+    if (spot_light > cos(cut_off)) {
+        color = object_color * (diffuse_light * light.diffColor + specular_light * light.specColor) * light_att_factor;
+    } else {
+        color = vec3(0.0, 0.0, 0.0);
+    }
+
+    return color;
+}
+
 void main()
 {
 	vec4 c_blend = texture2D(u_texture_0, v_uv2);
@@ -87,7 +160,12 @@ void main()
 		if (i >= u_lightCount)
 			break;
 	
-		col2 += computeLight(u_lights[i], texture_color.xyz, v_world_pos, v_world_norm);
+		if (u_lights[i].type == 0)
+			col2 += computeLight(u_lights[i], texture_color.xyz, v_world_pos, v_world_norm);
+		else if (u_lights[i].type == 1)
+			col2 += computeDirectionalLight(u_lights[i], texture_color.xyz, v_world_pos, v_world_norm);
+		else if (u_lights[i].type == 2)
+			col2 += computeSpotLight(u_lights[i], texture_color.xyz, v_world_pos, v_world_norm);
 	}
 	col2 = (1.0 - u_ka) * col2;
 	
