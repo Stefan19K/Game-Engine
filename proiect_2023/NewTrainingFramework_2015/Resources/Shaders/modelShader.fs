@@ -13,7 +13,8 @@ struct Light {
 };
 
 uniform sampler2D u_texture_0;
-uniform samplerCube u_texture_1;
+uniform sampler2D u_texture_1;
+uniform samplerCube u_texture_2;
 
 // Light related variables
 uniform vec3 u_amb_color;
@@ -32,12 +33,14 @@ varying vec3 v_frag_color;
 varying vec2 v_uv;
 varying vec3 v_world_norm;
 varying vec3 v_norm;
+varying vec3 v_world_binorm;
+varying vec3 v_world_tgt;
 
 vec3 computeLight(Light light, vec3 object_color, vec3 world_pos, vec3 world_normal)
 {
     vec3 L = normalize( light.pos - v_world_pos );
 
-    vec3 N = normalize(v_world_norm);
+    vec3 N = normalize(world_normal);
 
     vec3 V = normalize( u_cam_pos - v_world_pos );
 
@@ -70,7 +73,7 @@ vec3 computeDirectionalLight(Light light, vec3 object_color, vec3 world_pos, vec
 {
     vec3 L = normalize( light.pos - v_world_pos );
 
-    vec3 N = normalize(v_world_norm);
+    vec3 N = normalize(world_normal);
 
     vec3 V = normalize( u_cam_pos - v_world_pos );
 
@@ -103,7 +106,7 @@ vec3 computeSpotLight(Light light, vec3 object_color, vec3 world_pos, vec3 world
 {
     vec3 L = normalize( light.pos - v_world_pos );
 
-    vec3 N = normalize(v_world_norm);
+    vec3 N = normalize(world_normal);
 
     vec3 V = normalize( u_cam_pos - v_world_pos );
 
@@ -141,34 +144,62 @@ vec3 computeSpotLight(Light light, vec3 object_color, vec3 world_pos, vec3 world
 
 void main()
 {
+    // normal mapping
+    vec4 normalMap = texture2D(u_texture_1, v_uv);
+    normalMap = normalMap * 2.0 - 1.0;
+    normalMap = normalize(normalMap);
+    vec3 N = normalize(v_world_norm);
+    vec3 B = normalize(v_world_binorm);
+    vec3 T = normalize(v_world_tgt);
+
+    mat3 TBN = mat3(
+        T.x, B.x, N.x, 
+        T.y, B.y, N.y,
+        T.z, B.z, N.z
+    );
+
+    vec3 normal = TBN * normalMap.xyz;
+    normal = normalize(normal) + normalize(v_world_norm);
+    normal = normalize(normal);
+
+    // fog
 	float d = distance(u_cam_pos, v_world_pos);
 	float alpha = clamp(d, u_min_field, u_max_field);
 	alpha = (alpha - u_min_field) / (u_max_field - u_min_field);
 	vec4 texture_color = texture2D(u_texture_0, v_uv);
 
+    // sky reflection
 	vec3 vecCam = u_cam_pos - v_world_pos;
-	vec3 dirReflect = reflect(normalize(vecCam), normalize(v_norm));
-	vec4 c_reflected = textureCube(u_texture_1, dirReflect);
-
+	vec3 dirReflect = reflect(normalize(vecCam), normalize(normal));
+	vec4 c_reflected = textureCube(u_texture_2, dirReflect);
 	texture_color = c_reflected * 0.2 + texture_color * 0.8;
+
+	// lights
 	vec3 c_amb = texture_color.xyz * u_amb_color;
 	vec3 col1 = c_amb * u_ka;
-
 	vec3 col2 = vec3(0.0, 0.0, 0.0);
+    int k = 0;
+    //gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 	for (int i = 0; i < 10; i++) {
-		if (i >= u_lightCount)
-			break;
+        float aux = 1.0;
+        if (i - u_lightCount >= 0) {
+            aux = 0.0;
+        }
 
 		// Add light color based on the type of the light
 		// 0 is for normal point Light
 		// 1 is for directional light
 		// 2 is for spot light
-		if (u_lights[i].type == 0)
-			col2 += computeLight(u_lights[i], texture_color.xyz, v_world_pos, v_world_norm);
-		else if (u_lights[i].type == 1)
-			col2 += computeDirectionalLight(u_lights[i], texture_color.xyz, v_world_pos, v_world_norm);
-		else if (u_lights[i].type == 2)
-			col2 += computeSpotLight(u_lights[i], texture_color.xyz, v_world_pos, v_world_norm);
+		if (u_lights[i].type == 0) {
+			col2 += aux * computeLight(u_lights[i], texture_color.xyz, v_world_pos, normal);
+        }
+		else if (u_lights[i].type == 1) {
+			col2 += aux * computeDirectionalLight(u_lights[i], texture_color.xyz, v_world_pos, normal);
+        }
+		else if (u_lights[i].type == 2) {
+			col2 += aux * computeSpotLight(u_lights[i], texture_color.xyz, v_world_pos, normal);
+        }
+        //gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 	}
 	col2 = (1.0 - u_ka) * col2;
 

@@ -1,0 +1,17 @@
+-r
+C:\Users\Apostol\Desktop\Game Engine\proiect_2023\NewTrainingFramework_2015\NewTrainingFramework\Intel® VTune™ Profiler Results\NewTrainingFramework\r000ps
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,dotnet
+--stack-unwind-limit=8388608
+--itt-config=frame
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:counters:nostack
+--type=cpu:nostack
+--interval=100
+--start-paused
+--app-working-dir=C:\Users\Apostol\Desktop\Game Engine\proiect_2023\NewTrainingFramework_2015\NewTrainingFramework\
+--
+C:\Users\Apostol\Desktop\Game Engine\proiect_2023\NewTrainingFramework_2015\BIN-Nvidia\NewTrainingFramework.exe

@@ -230,3 +230,49 @@ public:
 	TextureResource* GetTextureResource() { return this->textureResource; }
 	GLuint GetTextureId() { return this->textureId; }
 };
+
+// Trajectory related classes and structures.
+enum TrajectoryType
+{
+	LINEAR,
+	LINE_STRIP,
+	LINE_LOOP,
+	CIRCLE
+
+	// Add more trajectory types here
+};
+
+enum DirectionType
+{
+	NORMAL,
+	ALTERN
+
+	// Add more direction types here
+};
+
+struct Trajectory
+{
+	TrajectoryType trajType;
+	DirectionType dirType;
+	vector<Vector3> points;
+	GLint iterCount;
+	GLfloat speed;
+	GLint currPointPos;
+	GLint nextPointPos;
+
+	// Variables used only for the circle trajectory.
+	GLfloat radius;
+	Vector3 center;
+	Vector3 planeAngles;
+
+	Trajectory() : 
+		trajType(LINEAR), 
+		dirType(NORMAL), 
+		iterCount(0), 
+		speed(0.0f), 
+		radius(0.0f), 
+		center(Vector3()), 
+		planeAngles(Vector3()),
+		currPointPos(0),
+		nextPointPos(1) {}
+};

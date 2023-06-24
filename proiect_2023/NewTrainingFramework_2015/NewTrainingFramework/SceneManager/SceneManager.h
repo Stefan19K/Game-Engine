@@ -17,7 +17,7 @@ namespace sceneManager {
 		Vector3 color;
 		GLfloat ka;
 
-		AmbientLight() : color(Vector3()), ka(1.0f) {}
+		AmbientLight() : color(Vector3(1.0f, 1.0f, 1.0f)), ka(1.0f) {}
 	};
 
 	struct Light {
@@ -68,6 +68,8 @@ namespace sceneManager {
 		ROTATE_CAMERA_POSITIVE_Y,
 		ROTATE_CAMERA_NEGATIVE_Y,
 		SWITCH_DEBUG_MODE,
+		NEXT_CAMERA,
+		PREV_CAMERA,
 		ACTION_COUNT
 	};
 
@@ -84,6 +86,7 @@ namespace sceneManager {
 		Vector3 fogColor;
 		map<unsigned char, Action> controls;
 		map<GLuint, Camera*> cameras;
+		vector<GLuint> cameraIds;
 		GLuint activeCameraId;
 		map<GLuint, SceneObject*> objects;
 
@@ -110,6 +113,8 @@ namespace sceneManager {
 		void LoadDebugSettings(xml_node<>* root);
 
 		Action GetActionType(const string& str);
+		TrajectoryType GetTrajectoryType(const string& str);
+		DirectionType GetDirectionType(const string& str);
 
 	public:
 		static SceneManager* GetInstance();
@@ -122,13 +127,13 @@ namespace sceneManager {
 		string	GetName()					{ return prjName; }
 		GLint	GetWidth()					{ return width; }
 		GLint	GetHeight()					{ return height; }
-		Camera* GetActiveCamera()			{ return cameras.at(activeCameraId); }
+		Camera* GetActiveCamera()			{ return cameras.at(cameraIds[activeCameraId]); }
 		GLfloat GetMinFogView()				{ return minFogField; }
 		GLfloat GetMaxFogView()				{ return maxFogField; }
 		Vector3 GetFogColor()				{ return fogColor; }
 		Vector3 GetAmbientColor()			{ return ambLight->color; }
 		GLfloat GetKa()						{ return ambLight->ka; }
 		Camera* GetCamera(const GLuint id)	{ return cameras.at(id); }
-		Light*	GetLight(const GLuint id)	{ return lights.at(id); }
+		Light* GetLight(const GLuint id) { return lights.find(id) != lights.end() ? lights.at(id) : nullptr; }
 	};
 }

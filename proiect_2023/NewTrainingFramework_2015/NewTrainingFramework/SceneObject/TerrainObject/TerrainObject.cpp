@@ -2,99 +2,84 @@
 #include "TerrainObject.h"
 #include "ResourceManager/ResourceManager.h"
 #include "SceneManager/SceneManager.h"
+#include "../Utilities/memDbg.h"
 
 using namespace resourceManager;
 using namespace sceneManager;
 
 void TerrainObject::Draw(Camera* cam)
 {
-	Model* model = ResourceManager::GetInstance()->LoadModel(modelId);
-	Shader* shader = ResourceManager::GetInstance()->LoadShader(shaderId);
-	vector<Texture*> textures(textureIds.size());
-	for (int i = 0; i < textureIds.size(); i++) {
-		textures[i] = ResourceManager::GetInstance()->LoadTexture(textureIds[i]);
-	}
+	//Model* model = ResourceManager::GetInstance()->LoadModel(modelId);
+	//Shader* shader = ResourceManager::GetInstance()->LoadShader(shaderId);
+	//vector<Texture*> textures(textureIds.size());
+	//for (int i = 0; i < textureIds.size(); i++) {
+	//	textures[i] = ResourceManager::GetInstance()->LoadTexture(textureIds[i]);
+	//}
 
-	Shaders* shdr = shader->GetShader();
+	//Shaders* shdr = shader->GetShader();
 
-	glUseProgram(shader->GetShader()->program);
+	//glUseProgram(shader->GetShader()->program);
 
-	/*if (textureIds.size() > 0) {
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(texture->GetTextureResource()->type, texture->GetTextureId());
-		if (shdr->textureUniforms[0] != -1)
-		{
-			glUniform1i(shdr->textureUniforms[0], 0);
-		}
-	}*/
-	for (int i = 0; i < textureIds.size(); i++) {
-		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(textures[i]->GetTextureResource()->type, textures[i]->GetTextureId());
-		if (shdr->textureUniforms[i] != -1)
-		{
-			glUniform1i(shdr->textureUniforms[i], i);
-		}
-	}
+	///*if (textureIds.size() > 0) {
+	//	glActiveTexture(GL_TEXTURE0);
+	//	glBindTexture(texture->GetTextureResource()->type, texture->GetTextureId());
+	//	if (shdr->textureUniforms[0] != -1)
+	//	{
+	//		glUniform1i(shdr->textureUniforms[0], 0);
+	//	}
+	//}*/
+	//for (int i = 0; i < textureIds.size(); i++) {
+	//	glActiveTexture(GL_TEXTURE0 + i);
+	//	glBindTexture(textures[i]->GetTextureResource()->type, textures[i]->GetTextureId());
+	//	if (shdr->textureUniforms[i] != -1)
+	//	{
+	//		glUniform1i(shdr->textureUniforms[i], i);
+	//	}
+	//}
 
-	GLuint ibold;
-	GLuint nrIndices;
-	vector<GLuint> indices;
+	//GLuint ibold;
+	//GLuint nrIndices;
+	//vector<GLuint> indices;
 
-	if (wired) {
-		ibold = model->GetWiredIbold();
-		nrIndices = model->GetNrWiredIndices();
-		indices = model->GetWiredIndices();
-	}
-	else {
-		ibold = model->GetIbold();
-		nrIndices = model->GetNrIndices();
-		indices = model->GetIndices();
-	}
+	//if (wired) {
+	//	ibold = model->GetWiredIbold();
+	//	nrIndices = model->GetNrWiredIndices();
+	//	indices = model->GetWiredIndices();
+	//}
+	//else {
+	//	ibold = model->GetIbold();
+	//	nrIndices = model->GetNrIndices();
+	//	indices = model->GetIndices();
+	//}
 
-	glBindBuffer(GL_ARRAY_BUFFER, model->GetVbold());
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibold);
+	//glBindBuffer(GL_ARRAY_BUFFER, model->GetVbold());
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibold);
 
-	if (shdr->positionAttribute != -1)
-	{
-		glEnableVertexAttribArray(shdr->positionAttribute);
-		glVertexAttribPointer(shdr->positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	}
+	//if (shdr->positionAttribute != -1)
+	//{
+	//	glEnableVertexAttribArray(shdr->positionAttribute);
+	//	glVertexAttribPointer(shdr->positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	//}
 
-	if (shdr->normAttribute != -1)
-	{
-		glEnableVertexAttribArray(shdr->normAttribute);
-		glVertexAttribPointer(shdr->normAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 2));
-	}
+	//if (shdr->normAttribute != -1)
+	//{
+	//	glEnableVertexAttribArray(shdr->normAttribute);
+	//	glVertexAttribPointer(shdr->normAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 2));
+	//}
 
-	if (shdr->colorAttribute != -1)
-	{
-		glEnableVertexAttribArray(shdr->colorAttribute);
-		glVertexAttribPointer(shdr->colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Vector3));
-	}
+	//if (shdr->colorAttribute != -1)
+	//{
+	//	glEnableVertexAttribArray(shdr->colorAttribute);
+	//	glVertexAttribPointer(shdr->colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Vector3));
+	//}
 
-	if (shdr->textureAttribute != -1)
-	{
-		glEnableVertexAttribArray(shdr->textureAttribute);
-		glVertexAttribPointer(shdr->textureAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 5));
-	}
+	//if (shdr->textureAttribute != -1)
+	//{
+	//	glEnableVertexAttribArray(shdr->textureAttribute);
+	//	glVertexAttribPointer(shdr->textureAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 5));
+	//}
 
-	if (shdr->textureAttribute2 != -1)
-	{
-		glEnableVertexAttribArray(shdr->textureAttribute2);
-		glVertexAttribPointer(shdr->textureAttribute2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 5 + sizeof(Vector2)));
-	}
-
-	if (shdr->heightUniform != -1)
-	{
-		glUniform3f(shdr->heightUniform, height.x, height.y, height.z);
-	}
-
-	if (shdr->uvOffsetUniform != -1)
-	{
-		glUniform2f(shdr->uvOffsetUniform, uvOffset.x, uvOffset.y);
-	}
-
-	if (shdr->modelUniform != -1)
+	/*if (shdr->modelUniform != -1)
 	{
 		glUniformMatrix4fv(shdr->modelUniform, 1, 0, (GLfloat*)this->matrix.m);
 	}
@@ -185,13 +170,35 @@ void TerrainObject::Draw(Camera* cam)
 		name = string("u_lights[") + to_string(i) + string("].spotAngle");
 		location = glGetUniformLocation(shdr->program, name.c_str());
 		glUniform1f(location, light->spotAngle);
+	}*/
+
+	SendCommonData();
+	Shader* shader = ResourceManager::GetInstance()->LoadShader(shaderId);
+	if (shader->GetShader()->heightUniform != -1)
+	{
+		glUniform3f(shader->GetShader()->heightUniform, height.x, height.y, height.z);
 	}
 
+	if (shader->GetShader()->uvOffsetUniform != -1)
+	{
+		glUniform2f(shader->GetShader()->uvOffsetUniform, uvOffset.x, uvOffset.y);
+	}
+
+	Model* model = ResourceManager::GetInstance()->LoadModel(modelId);
+	GLint nrIndices;
+	if (wired) {
+		nrIndices = model->GetNrWiredIndices();
+	}
+	else {
+		nrIndices = model->GetNrIndices();
+	}
 	GLenum mode = this->wired ? GL_LINES : GL_TRIANGLES;
 	glDrawElements(mode, nrIndices, GL_UNSIGNED_INT, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void TerrainObject::Update(GLfloat deltaTime)

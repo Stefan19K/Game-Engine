@@ -12,16 +12,23 @@ public:
 	GLuint program, vertexShader, fragmentShader;
 	char fileVS[260];
 	char fileFS[260];
+	
+	// attributes
 	GLint positionAttribute;
 	GLint normAttribute;
 	GLint colorAttribute;
+	GLint binormAttribute;
+	GLint tgtAttribute;
+	GLint textureAttribute;
+	GLint textureAttribute2;
+
+	// uniforms
 	GLint heightUniform;
 	GLint uvOffsetUniform;
 	GLint modelUniform;
 	GLint viewUniform;
 	GLint projectionUniform;
-	GLint textureAttribute;
-	GLint textureAttribute2;
+	std::vector<GLint> textureUniforms;
 
 	// Fog data
 	GLint minFieldUniform;
@@ -37,9 +44,6 @@ public:
 	GLint ambColorUniform;
 	GLint kaUniform;
 	GLint lightCountUniform;
-	// GLint lightUniforms;
-
-	std::vector<GLint> textureUniforms;
 
 	int Init(char * fileVertexShader, char * fileFragmentShader);
 	~Shaders();

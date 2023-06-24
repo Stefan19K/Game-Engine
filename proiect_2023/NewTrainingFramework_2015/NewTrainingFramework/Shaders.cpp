@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include "Shaders.h"
+#include "../Utilities/memDbg.h"
 
 int Shaders::Init(char * fileVertexShader, char * fileFragmentShader)
 {
@@ -29,6 +30,8 @@ int Shaders::Init(char * fileVertexShader, char * fileFragmentShader)
 	projectionUniform = glGetUniformLocation(program, "u_proj");
 	textureAttribute = glGetAttribLocation(program, "a_uv");
 	textureAttribute2 = glGetAttribLocation(program, "a_uv2");
+	binormAttribute = glGetAttribLocation(program, "a_binorm");
+	tgtAttribute = glGetAttribLocation(program, "a_tgt");
 
 	minFieldUniform = glGetUniformLocation(program, "u_min_field");
 	maxFieldUniform = glGetUniformLocation(program, "u_max_field");
@@ -41,7 +44,6 @@ int Shaders::Init(char * fileVertexShader, char * fileFragmentShader)
 	ambColorUniform = glGetUniformLocation(program, "u_amb_color");
 	kaUniform = glGetUniformLocation(program, "u_ka");
 	lightCountUniform = glGetUniformLocation(program, "u_lightCount");
-	// lightUniforms = glGetUniformLocation(program, "u_lights");
 
 	std::vector<GLint> aux(c_max_textures);
 	textureUniforms = aux;

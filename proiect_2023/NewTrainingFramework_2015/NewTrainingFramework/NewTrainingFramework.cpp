@@ -14,6 +14,7 @@
 #include <string.h>
 
 #include "../Utilities/utilities.h" // if you use STL, please include this line AFTER all other include
+#include "../Utilities/memDbg.h"
 
 using namespace resourceManager;
 using namespace sceneManager;
@@ -37,6 +38,8 @@ std::vector<Vertex>vertices;
 std::vector<unsigned short>indices;
 bool wired = false;
 GLenum mode = GL_TRIANGLES;
+float cntDeltaTime = 0;
+float maxLevel = 0.025f;
 
 void Mouse(ESContext* esContext, MouseButton button, MouseEvent event, Vector2 coord);
 
@@ -57,16 +60,11 @@ void Draw ( ESContext *esContext )
 
 void Update ( ESContext *esContext, float deltaTime )
 {
-	clock_t start_t = 0.0;
-	clock_t end_t = 0.0;
-
-	start_t = clock();
-
-	SceneManager::GetInstance()->Update(deltaTime);
-	
-	end_t = clock();
-
-	Sleep(c_min_interval - (end_t - start_t));
+	cntDeltaTime += deltaTime;
+	if (cntDeltaTime > maxLevel) {
+		SceneManager::GetInstance()->Update(cntDeltaTime);
+		cntDeltaTime -= maxLevel;
+	}
 }
 
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)

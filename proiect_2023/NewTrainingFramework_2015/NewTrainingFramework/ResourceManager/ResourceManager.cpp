@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ResourceManager.h"
+#include "../Utilities/memDbg.h"
 
 using namespace resourceManager;
 
@@ -237,6 +238,9 @@ Shader* ResourceManager::LoadShader(const GLuint id)
 Texture* ResourceManager::LoadTexture(const GLuint id)
 {
 	if (textures.find(id) == textures.end()) {
+		if (textureResources.find(id) == textureResources.end())
+			return nullptr;
+
 		Texture* newTexture = new Texture(textureResources.at(id));
 		newTexture->Load();
 		textures.insert(pair<GLuint, Texture*>(id, newTexture));

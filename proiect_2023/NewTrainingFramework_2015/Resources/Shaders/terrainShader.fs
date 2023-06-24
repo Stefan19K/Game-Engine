@@ -16,6 +16,7 @@ uniform sampler2D u_texture_0;
 uniform sampler2D u_texture_1;
 uniform sampler2D u_texture_2;
 uniform sampler2D u_texture_3;
+uniform sampler2D u_texture_4;
 
 // Light related variables
 uniform vec3 u_amb_color;

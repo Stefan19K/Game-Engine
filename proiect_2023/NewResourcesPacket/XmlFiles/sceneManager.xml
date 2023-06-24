@@ -78,6 +78,14 @@
 			<key>r</key>
 			<action>SWITCH_DEBUG_MODE</action>
 		</control>
+		<control>
+			<key>'</key>
+			<action>NEXT_CAMERA</action>
+		</control>
+		<control>
+			<key>%</key>
+			<action>PREV_CAMERA</action>
+		</control>
 		<!-- adaugati restul -->
 	</controls>
 	
@@ -101,7 +109,79 @@
 				<y>1</y>
 				<z>0</z>
 			</up>
-			<translationSpeed>300</translationSpeed>
+			<translationSpeed>100</translationSpeed>
+			<rotationSpeed>4.3</rotationSpeed>
+			<fov>45</fov>
+			<near>0.2</near>
+			<far>5000</far>
+		</camera>
+		<camera id="2">
+			<comment>elemntul type este folosit doar in taskul optional cu tipurile de Camera </comment>
+			<type>firstPerson</type>
+			<position>
+				<x>0</x>
+				<y>-20</y>
+				<z>200</z>
+			</position>
+			<target>
+				<x>0</x>
+				<y>0</y>
+				<z>-1</z>
+			</target>
+			<up>
+				<x>0</x>
+				<y>1</y>
+				<z>0</z>
+			</up>
+			<translationSpeed>100</translationSpeed>
+			<rotationSpeed>4.3</rotationSpeed>
+			<fov>45</fov>
+			<near>0.2</near>
+			<far>5000</far>
+		</camera>
+		<camera id="3">
+			<comment>elemntul type este folosit doar in taskul optional cu tipurile de Camera </comment>
+			<type>firstPerson</type>
+			<position>
+				<x>200</x>
+				<y>-20</y>
+				<z>0</z>
+			</position>
+			<target>
+				<x>0</x>
+				<y>0</y>
+				<z>-1</z>
+			</target>
+			<up>
+				<x>0</x>
+				<y>1</y>
+				<z>0</z>
+			</up>
+			<translationSpeed>100</translationSpeed>
+			<rotationSpeed>4.3</rotationSpeed>
+			<fov>45</fov>
+			<near>0.2</near>
+			<far>5000</far>
+		</camera>
+		<camera id="4">
+			<comment>elemntul type este folosit doar in taskul optional cu tipurile de Camera </comment>
+			<type>firstPerson</type>
+			<position>
+				<x>-200</x>
+				<y>-20</y>
+				<z>0</z>
+			</position>
+			<target>
+				<x>0</x>
+				<y>0</y>
+				<z>-1</z>
+			</target>
+			<up>
+				<x>0</x>
+				<y>1</y>
+				<z>0</z>
+			</up>
+			<translationSpeed>100</translationSpeed>
 			<rotationSpeed>4.3</rotationSpeed>
 			<fov>45</fov>
 			<near>0.2</near>
@@ -116,19 +196,19 @@
 		<comment>in interiorul elementelor model, shader, texture, se gaseste id-ul corespunzator resursei din sceneManager.xml
 		Elementul position se refera practic la translatia obiectului.
 		</comment>
-		<object id="1">
-			
-			<model>1</model>
+		<object id="4">
+			<model>14</model>
 			<shader>10</shader>
 			<type>normal</type>
-			<name>Crocodil_verde</name>
+			<name>Tren</name>
 			<textures>
-				<texture id="4"/>
+				<texture id="9"/>
+				<texture id="16"/>
 			</textures>
 			<position>
-				<x>20.5</x>
-				<y>30.0</y>
-				<z>21.22</z>
+				<x>250.5</x>
+				<y>-30.0</y>
+				<z>221.22</z>
 			</position>
 			<rotation>
 				<x>0</x>
@@ -136,9 +216,9 @@
 				<z>0</z>
 			</rotation>
 			<scale>
-				<x>1.0</x>
-				<y>1.0</y>
-				<z>1.0</z>
+				<x>0.5</x>
+				<y>0.5</y>
+				<z>0.5</z>
 			</scale>
 			<lights>
 				<light>1</light>
@@ -159,33 +239,41 @@
 				<oy/>
 				<oz/>
 			</followingCamera>
-			<trajectory type="linear" iteration="infinite" direction="alternate">
-				<comment>startPoint e chiar Pos</comment>
-				<endPoint>
-					<x>0.5</x>
-					<y>100.0</y>
-					<z>1.0</z>				
-				</endPoint>
-				<speed>0.1</speed>
+			<trajectory type="line_strip" iteration="2" direction="normal">
+				<points>
+					<point>
+						<x>0.5</x>
+						<y>200.0</y>
+						<z>1.0</z>
+					</point>
+					<point>
+						<x>0.5</x>
+						<y>200.0</y>
+						<z>100.0</z>
+					</point>
+					<point>
+						<x>0.5</x>
+						<y>30.0</y>
+						<z>100.0</z>
+					</point>
+				</points>
+				<speed>30</speed>
 			</trajectory>
-			<lights>
-				<light>1</light>
-			</lights>
 			-->
 		</object>
-		<object id="3">
-			
+		<object id="5">
 			<model>5</model>
 			<shader>10</shader>
 			<type>normal</type>
 			<name>Mesh_minge</name>
 			<textures>
 				<texture id="6"/>
+				<texture id="16"/>
 			</textures>
 			<position>
-				<x>90.5</x>
-				<y>0</y>
-				<z>20</z>
+				<x>120.5</x>
+				<y>5.0</y>
+				<z>-230</z>
 			</position>
 			<rotation>
 				<x>0</x>
@@ -193,24 +281,24 @@
 				<z>0</z>
 			</rotation>
 			<scale>
-				<x>0.1</x>
-				<y>0.1</y>
-				<z>0.1</z>
+				<x>0.01</x>
+				<y>0.01</y>
+				<z>0.01</z>
 			</scale>
 		</object>
-		<object id="4">
-
+		<object id="6">
 			<model>5</model>
 			<shader>10</shader>
 			<type>normal</type>
 			<name>Mesh_minge2</name>
 			<textures>
 				<texture id="6"/>
+				<texture id="16"/>
 			</textures>
 			<position>
-				<x>20.5</x>
-				<y>15.0</y>
-				<z>-180</z>
+				<x>40.5</x>
+				<y>5.0</y>
+				<z>-230</z>
 			</position>
 			<rotation>
 				<x>0</x>
@@ -218,12 +306,242 @@
 				<z>0</z>
 			</rotation>
 			<scale>
-				<x>0.1</x>
-				<y>0.1</y>
-				<z>0.1</z>
+				<x>0.01</x>
+				<y>0.01</y>
+				<z>0.01</z>
 			</scale>
 		</object>
+		<object id="7">
+			<model>5</model>
+			<shader>10</shader>
+			<type>normal</type>
+			<name>Sfera1</name>
+			<textures>
+				<texture id="6"/>
+				<texture id="16"/>
+			</textures>
+			<position>
+				<x>20.5</x>
+				<y>15.0</y>
+				<z>-150.0</z>
+			</position>
+			<rotation>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
+			</rotation>
+			<scale>
+				<x>0.5</x>
+				<y>0.5</y>
+				<z>0.5</z>
+			</scale>
+			<lights>
+				<light>2</light>
+			</lights>
+		</object>
 		<object id="8">
+			<model>5</model>
+			<shader>10</shader>
+			<type>normal</type>
+			<name>Sfera2</name>
+			<textures>
+				<texture id="6"/>
+				<texture id="16"/>
+			</textures>
+			<position>
+				<x>110.5</x>
+				<y>15.0</y>
+				<z>-150.0</z>
+			</position>
+			<rotation>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
+			</rotation>
+			<scale>
+				<x>0.5</x>
+				<y>0.5</y>
+				<z>0.5</z>
+			</scale>
+			<lights>
+				<light>1</light>
+			</lights>
+		</object>
+		<object id="9">
+			<model>5</model>
+			<shader>10</shader>
+			<type>normal</type>
+			<name>Sfera3</name>
+			<textures>
+				<texture id="6"/>
+				<texture id="16"/>
+			</textures>
+			<position>
+				<x>200.5</x>
+				<y>15.0</y>
+				<z>-150.0</z>
+			</position>
+			<rotation>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
+			</rotation>
+			<scale>
+				<x>0.5</x>
+				<y>0.5</y>
+				<z>0.5</z>
+			</scale>
+			<lights>
+				<light>1</light>
+			</lights>
+			<trajectory type="linear" iteration="infinite" direction="normal">
+				<endPoint>
+					<x>200.5</x>
+					<y>15.0</y>
+					<z>0.0</z>
+				</endPoint>					
+				<speed>30</speed>
+			</trajectory>
+		</object>
+		<object id="10">
+			<model>5</model>
+			<shader>10</shader>
+			<type>normal</type>
+			<name>Sfera4</name>
+			<textures>
+				<texture id="6"/>
+				<texture id="16"/>
+			</textures>
+			<position>
+				<x>290.5</x>
+				<y>15.0</y>
+				<z>-150.0</z>
+			</position>
+			<rotation>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
+			</rotation>
+			<scale>
+				<x>0.5</x>
+				<y>0.5</y>
+				<z>0.5</z>
+			</scale>
+			<lights>
+				<light>1</light>
+			</lights>
+			<trajectory type="line_strip" iteration="infinite" direction="normal">
+				<points>
+					<point>
+						<x>290.5</x>
+						<y>15.0</y>
+						<z>0.0</z>
+					</point>
+					<point>
+						<x>290.5</x>
+						<y>100.0</y>
+						<z>0.0</z>
+					</point>
+					<point>
+						<x>290.5</x>
+						<y>100.0</y>
+						<z>-150.0</z>
+					</point>
+				</points>
+				<speed>30</speed>
+			</trajectory>
+		</object>
+		<object id="11">
+			<model>5</model>
+			<shader>10</shader>
+			<type>normal</type>
+			<name>Sfera5</name>
+			<textures>
+				<texture id="6"/>
+				<texture id="16"/>
+			</textures>
+			<position>
+				<x>380.5</x>
+				<y>15.0</y>
+				<z>-150.0</z>
+			</position>
+			<rotation>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
+			</rotation>
+			<scale>
+				<x>0.5</x>
+				<y>0.5</y>
+				<z>0.5</z>
+			</scale>
+			<lights>
+				<light>1</light>
+			</lights>
+			<trajectory type="line_loop" iteration="infinite" direction="normal">
+				<points>
+					<point>
+						<x>380.5</x>
+						<y>15.0</y>
+						<z>0.0</z>
+					</point>
+					<point>
+						<x>380.5</x>
+						<y>100.0</y>
+						<z>0.0</z>
+					</point>
+					<point>
+						<x>380.5</x>
+						<y>100.0</y>
+						<z>-150.0</z>
+					</point>
+				</points>
+				<speed>30</speed>
+			</trajectory>
+		</object>
+		<object id="12">
+			<model>5</model>
+			<shader>10</shader>
+			<type>normal</type>
+			<name>Sfera6</name>
+			<textures>
+				<texture id="6"/>
+				<texture id="16"/>
+			</textures>
+			<position>
+				<x>470.5</x>
+				<y>15.0</y>
+				<z>-150.0</z>
+			</position>
+			<rotation>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
+			</rotation>
+			<scale>
+				<x>0.5</x>
+				<y>0.5</y>
+				<z>0.5</z>
+			</scale>
+			<lights>
+				<light>1</light>
+			</lights>
+			<trajectory type="circle" iteration="infinite" direction="normal">
+				<center>
+					<x>470.0</x>
+					<y>50.0</y>
+					<z>-150.0</z>
+				</center>
+				<radius>35</radius>
+				<rotationPlane>
+					<x>0.0</x>
+					<y>0.0</y>
+					<z>0.0</z>
+				</rotationPlane>
+				<speed>30</speed>
+			</trajectory>
+		</object>
+		<object id="1">
 			<model>generated</model>
 			<shader>3</shader>
 			<type>terrain</type>
@@ -257,9 +575,9 @@
 				<light>2</light>
 			</lights>
 			<height>
-				<r>20.0</r>
+				<r>0.0</r>
 				<g>0.0</g>
-				<b>-10.0</b>
+				<b>0.0</b>
 			</height>
 			<followingCamera>
 				<cameras>
@@ -269,7 +587,7 @@
 				<oz/>
 			</followingCamera>
 		</object>
-		<object id="9">
+		<object id="2">
 			<model>6</model>
 			<shader>4</shader>
 			<type>skybox</type>
@@ -301,7 +619,7 @@
 				<oz/>
 			</followingCamera>
 		</object>
-		<object id="10">
+		<object id="3">
 			<model>7</model>
 			<shader>5</shader>
 			<type>fire</type>
@@ -329,40 +647,42 @@
 			</scale>
 		</object>
 	</objects>
-	
+
+	<!--
 	<ambientalLight>
 		<color>
 			<r>1.0</r>
 			<g>1.0</g>
 			<b>1.0</b>
 		</color>
-		<ratio>0.2</ratio>
+		<ratio>0.0</ratio>
 	</ambientalLight>
+	-->
 	
 	<lights>
 		<light id="1">
-			<associatedObject>3</associatedObject>
+			<associatedObject>5</associatedObject>
 			<diffuseColor>
 				<r>1.0</r>
 				<g>1.0</g>
 				<b>1.0</b>
-				<ratio>3.5</ratio>
+				<ratio>1.5</ratio>
 			</diffuseColor>
 			<specularColor>
 				<r>1.0</r>
-				<g>1.0</g>
-				<b>1.0</b>
+				<g>0.0</g>
+				<b>0.0</b>
 				<ratio>0.5</ratio>
 			</specularColor>
 			<type>point</type>
 		</light>
 		<light id="2">
-			<associatedObject>4</associatedObject>
+			<associatedObject>6</associatedObject>
 			<diffuseColor>
 				<r>1.0</r>
 				<g>1.0</g>
 				<b>1.0</b>
-				<ratio>3.5</ratio>
+				<ratio>1.5</ratio>
 			</diffuseColor>
 			<specularColor>
 				<r>1.0</r>

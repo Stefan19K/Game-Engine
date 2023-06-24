@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Camera.h"
+#include "../Utilities/memDbg.h"
 
 void Camera::moveOx(float direction)
 {

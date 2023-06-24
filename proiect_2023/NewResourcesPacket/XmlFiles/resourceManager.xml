@@ -160,6 +160,20 @@
 				<wrap_s>REPEAT</wrap_s>
 				<wrap_t>REPEAT</wrap_t>
 			</texture>
+			<texture id="16" type="2d">
+				<file>NormalMap.tga</file>
+				<min_filter>LINEAR</min_filter>
+				<mag_filter>LINEAR</mag_filter>
+				<wrap_s>REPEAT</wrap_s>
+				<wrap_t>REPEAT</wrap_t>
+			</texture>
+			<texture id="9" type="2d">
+				<file>Train.tga</file>
+				<min_filter>LINEAR</min_filter>
+				<mag_filter>LINEAR</mag_filter>
+				<wrap_s>CLAMP_TO_EDGE</wrap_s>
+				<wrap_t>CLAMP_TO_EDGE</wrap_t>
+			</texture>
 			<!-- si aici se adauga toate texturile -->
 		</folder>
 	</textures>	

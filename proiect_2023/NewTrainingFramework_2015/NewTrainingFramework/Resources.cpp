@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Resources.h"
+#include "../Utilities/memDbg.h"
 
 void Model::LoadVertexData()
 {
