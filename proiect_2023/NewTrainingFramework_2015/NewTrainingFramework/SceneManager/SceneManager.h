@@ -93,6 +93,8 @@ namespace sceneManager {
 		AmbientLight* ambLight;
 		map<GLuint, Light*> lights;
 
+		CoordSys* coordSys;
+
 		bool debugMode;
 
 		void ReadConfigFile();
@@ -111,6 +113,8 @@ namespace sceneManager {
 		void LoadAmbientalLight(xml_node<>* root);
 		void LoadLights(xml_node<>* root);
 		void LoadDebugSettings(xml_node<>* root);
+
+		void DrawCoordSystem();
 
 		Action GetActionType(const string& str);
 		TrajectoryType GetTrajectoryType(const string& str);

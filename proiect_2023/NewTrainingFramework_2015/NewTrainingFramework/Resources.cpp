@@ -2,6 +2,44 @@
 #include "Resources.h"
 #include "../Utilities/memDbg.h"
 
+void CoordSys::Initialize()
+{
+	nrVertices = 6;
+	vertices = vector<Vertex>(nrVertices);
+	vertices[0].pos = Vector3();
+	vertices[1].pos = Vector3(1000.0f, 0.0f, 0.0f);
+	vertices[2].pos = Vector3();
+	vertices[3].pos = Vector3(0.0f, 1000.0f, 0.0f);
+	vertices[4].pos = Vector3();
+	vertices[5].pos = Vector3(0.0f, 0.0f, 1000.0f);
+
+	vertices[0].col = oxColor;
+	vertices[1].col = oxColor;
+	vertices[2].col = oyColor;
+	vertices[3].col = oyColor;
+	vertices[4].col = ozColor;
+	vertices[5].col = ozColor;
+
+	nrIndices = 6;
+	indices = {
+		0, 1,
+		2, 3,
+		4, 5
+	};
+
+	// hitbox object
+	glGenBuffers(1, &vbold);
+	glBindBuffer(GL_ARRAY_BUFFER, vbold);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * nrVertices, vertices.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// index object
+	glGenBuffers(1, &ibold);
+	glBindBuffer(GL_ARRAY_BUFFER, ibold);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(indices[0]) * nrIndices, indices.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void Model::LoadVertexData()
 {
 	LoadVerticesIndices();

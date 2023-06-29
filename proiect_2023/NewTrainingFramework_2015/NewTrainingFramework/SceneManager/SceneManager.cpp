@@ -73,43 +73,6 @@ void SceneManager::ReadConfigFile()
 	if (node) {
 		LoadDebugSettings(node);
 	}
-	
-
-	/*for (xml_node<>* pNode = pRoot->first_node(); pNode; pNode = pNode->next_sibling())
-	{
-		if (string(pNode->name()) == "gameName") {
-			LoadProjectName(pNode);
-		} else if (string(pNode->name()) == "defaultScreenSize") {
-			LoadScreenSize(pNode);
-		}
-		else if (string(pNode->name()) == "backgroundColor") {
-			LoadBackgroundColor(pNode);
-		}
-		else if (string(pNode->name()) == "fog") {
-			LoadFog(pNode);
-		}
-		else if (string(pNode->name()) == "controls") {
-			LoadControls(pNode);
-		}
-		else if (string(pNode->name()) == "cameras") {
-			LoadCameras(pNode);
-		}
-		else if (string(pNode->name()) == "activeCamera") {
-			LoadActiveCamera(pNode);
-		}
-		else if (string(pNode->name()) == "objects") {
-			LoadObjects(pNode);
-		}
-		else if (string(pNode->name()) == "ambientalLight") {
-			LoadAmbientalLight(pNode);
-		}
-		else if (string(pNode->name()) == "lights") {
-			LoadLights(pNode);
-		}
-		else if (string(pNode->name()) == "debugSettings") {
-			LoadDebugSettings(pNode);
-		}
-	}*/
 }
 
 void SceneManager::LoadProjectName(xml_node<>* root)
@@ -965,6 +928,49 @@ void SceneManager::LoadDebugSettings(xml_node<>* root)
 	// TODO
 }
 
+void SceneManager::DrawCoordSystem()
+{
+	Shader* shader = ResourceManager::GetInstance()->LoadShader(0);
+	Shaders* shdr = shader->GetShader();
+
+	glBindBuffer(GL_ARRAY_BUFFER, coordSys->vbold);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, coordSys->ibold);
+
+	if (shdr->positionAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->positionAttribute);
+		glVertexAttribPointer(shdr->positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	}
+
+	if (shdr->colorAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->colorAttribute);
+		glVertexAttribPointer(shdr->colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Vector3));
+	}
+
+	if (shdr->modelUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->modelUniform, 1, 0, (GLfloat*)Matrix().SetIdentity().m);
+	}
+
+	if (shdr->viewUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->viewUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetViewMatrix().m);
+	}
+
+	if (shdr->projectionUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->projectionUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix().m);
+	}
+
+	glDrawElements(GL_LINES, coordSys->nrIndices, GL_UNSIGNED_INT, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 Action SceneManager::GetActionType(const string& str)
 {
 	// Move camera constants
@@ -1057,6 +1063,8 @@ void SceneManager::Init()
 {
 	debugMode = false;
 
+	coordSys = new CoordSys();
+
 	ReadConfigFile();
 	glClearColor(bckgrColor.x, bckgrColor.y, bckgrColor.z, 1.0f);
 	glEnable(GL_DEPTH_TEST);
@@ -1082,6 +1090,8 @@ void SceneManager::Draw()
 		}
 	}
 	else {
+		DrawCoordSystem();
+
 		for (const auto& object : objects) {
 			if (object.second->GetType() == "normal")
 				object.second->DrawDebugMode();

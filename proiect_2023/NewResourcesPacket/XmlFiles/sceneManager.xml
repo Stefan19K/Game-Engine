@@ -79,10 +79,12 @@
 			<action>SWITCH_DEBUG_MODE</action>
 		</control>
 		<control>
+			<!--Right arrow de pe tastatura-->
 			<key>'</key>
 			<action>NEXT_CAMERA</action>
 		</control>
 		<control>
+			<!--Left arrow de pe tastatura-->
 			<key>%</key>
 			<action>PREV_CAMERA</action>
 		</control>

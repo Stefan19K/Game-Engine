@@ -10,6 +10,40 @@
 
 using namespace std;
 
+struct HitBox {
+	Vector3 vMin;
+	Vector3 vMax;
+	GLuint vbold;
+	GLuint ibold;
+	GLuint nrVertices;
+	GLuint nrIndices;
+	vector<Vertex> vertices;
+	vector<GLuint> indices;
+
+	HitBox() : vMin(Vector3()), vMax(Vector3()), vbold(0), ibold(0), nrVertices(0), nrIndices(0) {}
+};
+
+struct CoordSys {
+	Vector3 oxColor;
+	Vector3 oyColor;
+	Vector3 ozColor;
+	GLuint vbold;
+	GLuint ibold;
+	GLuint nrVertices;
+	GLuint nrIndices;
+	vector<Vertex> vertices;
+	vector<GLuint> indices;
+
+	CoordSys() : 
+		oxColor(Vector3(1.0f, 0.0f, 0.0f)), oyColor(Vector3(0.0f, 1.0f, 0.0f)), ozColor(Vector3(0.0f, 0.0f, 1.0f)),
+		vbold(0), ibold(0), nrVertices(0), nrIndices(0) 
+	{
+		Initialize();
+	}
+
+	void Initialize();
+};
+
 struct ModelResource {
 	unsigned int id;
 	string path;
@@ -99,19 +133,6 @@ struct TextureResource {
 
 class Model {
 private:
-	struct HitBox {
-		Vector3 vMin;
-		Vector3 vMax;
-		GLuint vbold;
-		GLuint ibold;
-		GLuint nrVertices;
-		GLuint nrIndices;
-		vector<Vertex> vertices;
-		vector<GLuint> indices;
-
-		HitBox() : vMin(Vector3()), vMax(Vector3()), vbold(0), ibold(0), nrVertices(0), nrIndices(0) {}
-	};
-
 	ModelResource* modelResource;
 	GLuint ibold;
 	GLuint wiredIbold;
