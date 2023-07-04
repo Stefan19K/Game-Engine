@@ -70,9 +70,7 @@ void SceneManager::ReadConfigFile()
 	LoadLights(node);
 
 	node = pRoot->first_node("debugSettings");
-	if (node) {
-		LoadDebugSettings(node);
-	}
+	LoadDebugSettings(node);
 }
 
 void SceneManager::LoadProjectName(xml_node<>* root)
@@ -926,6 +924,40 @@ void SceneManager::LoadLights(xml_node<>* root)
 void SceneManager::LoadDebugSettings(xml_node<>* root)
 {
 	// TODO
+	xml_node<>* node;
+	coordSys = new CoordSys();
+
+	if (!root)
+		return;
+
+	node = root->first_node("globalAxes");
+	if (node) {
+		xml_node<>* nNode = node->first_node("OXColor");
+		if (nNode) {
+			coordSys->oxColor = Vector3(
+				atof((nNode->first_node("r"))->value()),
+				atof((nNode->first_node("g"))->value()),
+				atof((nNode->first_node("b"))->value()));
+		}
+
+		 nNode = node->first_node("OYColor");
+		if (nNode) {
+			coordSys->oyColor = Vector3(
+				atof((nNode->first_node("r"))->value()),
+				atof((nNode->first_node("g"))->value()),
+				atof((nNode->first_node("b"))->value()));
+		}
+
+		nNode = node->first_node("OZColor");
+		if (nNode) {
+			coordSys->ozColor = Vector3(
+				atof((nNode->first_node("r"))->value()),
+				atof((nNode->first_node("g"))->value()),
+				atof((nNode->first_node("b"))->value()));
+		}
+	}
+
+	coordSys->Initialize();
 }
 
 void SceneManager::DrawCoordSystem()
@@ -1062,8 +1094,6 @@ SceneManager* SceneManager::GetInstance()
 void SceneManager::Init()
 {
 	debugMode = false;
-
-	coordSys = new CoordSys();
 
 	ReadConfigFile();
 	glClearColor(bckgrColor.x, bckgrColor.y, bckgrColor.z, 1.0f);

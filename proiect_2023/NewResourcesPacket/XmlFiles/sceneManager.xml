@@ -703,6 +703,23 @@
 	</lights>
 
 	<debugSettings>
+		<globalAxes>
+			<OXColor>
+				<r>0.0</r>
+				<g>0.0</g>
+				<b>0.0</b>
+			</OXColor>
+			<OYColor>
+				<r>0.0</r>
+				<g>1.0</g>
+				<b>0.0</b>
+			</OYColor>
+			<OZColor>
+				<r>0.0</r>
+				<g>0.0</g>
+				<b>1.0</b>
+			</OZColor>
+		</globalAxes>
 		<objectAxes>
 			<OXColor>
 				<r>1.0</r>

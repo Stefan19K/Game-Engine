@@ -36,10 +36,7 @@ struct CoordSys {
 
 	CoordSys() : 
 		oxColor(Vector3(1.0f, 0.0f, 0.0f)), oyColor(Vector3(0.0f, 1.0f, 0.0f)), ozColor(Vector3(0.0f, 0.0f, 1.0f)),
-		vbold(0), ibold(0), nrVertices(0), nrIndices(0) 
-	{
-		Initialize();
-	}
+		vbold(0), ibold(0), nrVertices(0), nrIndices(0) {}
 
 	void Initialize();
 };

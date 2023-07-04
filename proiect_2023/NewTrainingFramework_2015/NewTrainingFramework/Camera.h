@@ -1,4 +1,5 @@
 #pragma once
+#include "Resources.h"
 #include "../Utilities/Math.h"
 
 class Camera {
@@ -20,6 +21,8 @@ private:
 	Matrix worldMatrix;
 
 public:
+	CoordSys* coordSys;
+
 	Camera() :
 		position(Vector3() + Vector3(0.0f, 1.0f, 10.0f)),
 		target(Vector3() + Vector3(0.0f, 0.0f, 0.0f)),

@@ -32,6 +32,8 @@ protected:
 	// Add more trajectory updates when adding new trajectories.
 
 public:
+	CoordSys* coordSys;
+
 	SceneObject() :
 		id(MAXUINT),
 		modelId(MAXUINT),
