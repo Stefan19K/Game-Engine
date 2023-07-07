@@ -960,7 +960,7 @@ void SceneManager::LoadDebugSettings(xml_node<>* root)
 	coordSys->Initialize();
 }
 
-void SceneManager::DrawCoordSystem()
+void SceneManager::DrawCoordSystem(CoordSys* coordSys)
 {
 	Shader* shader = ResourceManager::GetInstance()->LoadShader(0);
 	Shaders* shdr = shader->GetShader();
@@ -1120,11 +1120,16 @@ void SceneManager::Draw()
 		}
 	}
 	else {
-		DrawCoordSystem();
+		DrawCoordSystem(this->coordSys);
 
 		for (const auto& object : objects) {
-			if (object.second->GetType() == "normal")
+			if (object.second->GetType() == "normal") {
 				object.second->DrawDebugMode();
+				object.second->DrawCoordSystem(
+					ResourceManager::GetInstance()->LoadModel(object.second->GetModelId())->GetCoordSys()
+				);
+			}
+
 			if (object.second->GetType() == "terrain")
 				((TerrainObject*)object.second)->DrawDebugMode();
 			if (object.second->GetType() == "skybox")

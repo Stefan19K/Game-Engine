@@ -2,16 +2,16 @@
 #include "Resources.h"
 #include "../Utilities/memDbg.h"
 
-void CoordSys::Initialize()
+void CoordSys::Initialize(Vector3 center, GLfloat x, GLfloat y, GLfloat z)
 {
 	nrVertices = 6;
 	vertices = vector<Vertex>(nrVertices);
-	vertices[0].pos = Vector3();
-	vertices[1].pos = Vector3(1000.0f, 0.0f, 0.0f);
-	vertices[2].pos = Vector3();
-	vertices[3].pos = Vector3(0.0f, 1000.0f, 0.0f);
-	vertices[4].pos = Vector3();
-	vertices[5].pos = Vector3(0.0f, 0.0f, 1000.0f);
+	vertices[0].pos = center;
+	vertices[1].pos = Vector3(x, center.y, center.z);
+	vertices[2].pos = center;
+	vertices[3].pos = Vector3(center.x, y, center.z);
+	vertices[4].pos = center;
+	vertices[5].pos = Vector3(center.x, center.y, z);
 
 	vertices[0].col = oxColor;
 	vertices[1].col = oxColor;
@@ -173,6 +173,8 @@ void Model::LoadVerticesIndices()
 			p = strtok(NULL, ", ");
 		}
 	}
+
+	LoadCoordSys();
 }
 
 void Model::LoadWiredIndices()
@@ -186,6 +188,12 @@ void Model::LoadWiredIndices()
 		wiredIndices.push_back(indices[i + 2]);
 		wiredIndices.push_back(indices[i]);
 	}
+}
+
+void Model::LoadCoordSys()
+{
+	Vector3 center = hitbox->vMin + (hitbox->vMax - hitbox->vMin) / 2.0f;
+	coordSys->Initialize(center, hitbox->vMax.x, hitbox->vMax.y, hitbox->vMax.z);
 }
 
 void Model::Load(Vector3& col)

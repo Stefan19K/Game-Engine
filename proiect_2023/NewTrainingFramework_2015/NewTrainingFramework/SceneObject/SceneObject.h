@@ -28,12 +28,9 @@ protected:
 	void UpdateLineStripTrajectory(float deltaTimeSeconds);
 	void UpdateLineLoopTrajectory(float deltaTimeSeconds);
 	void UpdateCircularTrajectory(float deltaTimeSeconds);
-
 	// Add more trajectory updates when adding new trajectories.
 
 public:
-	CoordSys* coordSys;
-
 	SceneObject() :
 		id(MAXUINT),
 		modelId(MAXUINT),
@@ -138,6 +135,7 @@ public:
 
 	void Draw(Camera* cam);
 	void DrawDebugMode();
+	void DrawCoordSystem(CoordSys* coordSys);
 	void Update(float deltaTimeSeconds);
 	void UpdateTranformationMatrix();
 	void SortTextures();

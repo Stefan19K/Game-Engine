@@ -114,7 +114,7 @@ namespace sceneManager {
 		void LoadLights(xml_node<>* root);
 		void LoadDebugSettings(xml_node<>* root);
 
-		void DrawCoordSystem();
+		void DrawCoordSystem(CoordSys* coordSys);
 
 		Action GetActionType(const string& str);
 		TrajectoryType GetTrajectoryType(const string& str);

@@ -38,7 +38,8 @@ struct CoordSys {
 		oxColor(Vector3(1.0f, 0.0f, 0.0f)), oyColor(Vector3(0.0f, 1.0f, 0.0f)), ozColor(Vector3(0.0f, 0.0f, 1.0f)),
 		vbold(0), ibold(0), nrVertices(0), nrIndices(0) {}
 
-	void Initialize();
+	// void Initialize();
+	void Initialize(Vector3 center = Vector3(), GLfloat x = 1000.0f, GLfloat y = 1000.0f, GLfloat z = 1000.0f);
 };
 
 struct ModelResource {
@@ -141,11 +142,13 @@ private:
 	vector<GLuint> indices;
 	vector<GLuint> wiredIndices;
 	HitBox* hitbox;
+	CoordSys* coordSys;
 
 	void LoadVertexData();
 	void LoadHitBoxData(Vector3& col);
 	void LoadVerticesIndices();
 	void LoadWiredIndices();
+	void LoadCoordSys();
 
 public:
 	Model() :
@@ -156,7 +159,8 @@ public:
 		nrVertices(0),
 		nrIndices(0),
 		nrWiredIndices(0),
-		hitbox(new HitBox()) {}
+		hitbox(new HitBox()),
+		coordSys(new CoordSys()) {}
 
 	Model(ModelResource* resource) :
 		modelResource(resource),
@@ -166,7 +170,8 @@ public:
 		nrVertices(0),
 		nrIndices(0),
 		nrWiredIndices(0),
-		hitbox(new HitBox) {}
+		hitbox(new HitBox),
+		coordSys(new CoordSys()) {}
 
 	~Model() {}
 
@@ -185,6 +190,7 @@ public:
 	vector<GLuint>	GetIndices()		{ return this->indices; }
 	vector<GLuint>	GetWiredIndices()	{ return this->wiredIndices; }
 	HitBox*			GetHitbox()			{ return this->hitbox; }
+	CoordSys*		GetCoordSys()		{ return this->coordSys; }
 
 	// Show structure data
 	void print()
