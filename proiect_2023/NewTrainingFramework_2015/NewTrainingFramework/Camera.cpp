@@ -31,12 +31,13 @@ void Camera::moveOz(float direction)
 void Camera::rotateOX(float direction)
 {
 	Matrix matrix = Matrix().SetRotationX(rotateSpeed * direction * deltaTime);
-	Vector4 rotatedUp = Vector4(up, 1.0f) * matrix;
-	Vector4 up_4 = rotatedUp * worldMatrix;
+	Vector4 rotatedUp = Vector4(yAxis, 1.0f) * matrix;
+	Vector4 up_4 = rotatedUp;
+	//Vector4 up_4 = rotatedUp * worldMatrix;
 	up = Vector3(up_4.x, up_4.y, up_4.z);
 	up = up.Normalize();
 	Vector4 localTarget = Vector4(0.0f, 0.0f, -(target - position).Length(), 1.0f);
-	Vector4 rotatedTarget = localTarget * matrix;
+	Vector4 rotatedTarget = matrix * localTarget;
 	Vector4 target_4 = rotatedTarget * worldMatrix;
 	target = Vector3(target_4.x, target_4.y, target_4.z);
 	UpdateWorldView();
@@ -54,11 +55,11 @@ void Camera::rotateOY(float direction)
 
 void Camera::rotateOZ(float direction)
 {
-	Matrix matrix = Matrix().SetRotationZ(rotateSpeed * direction * deltaTime);
+	/*Matrix matrix = Matrix().SetRotationZ(rotateSpeed * direction * deltaTime);
 	Vector4 localTarget = Vector4(0.0f, 0.0f, -(target - position).Length(), 1.0f);
 	Vector4 rotatedTarget = localTarget * matrix;
 	Vector4 target_4 = rotatedTarget * worldMatrix;
-	target = Vector3(target_4.x, target_4.y, target_4.z);
+	target = Vector3(target_4.x, target_4.y, target_4.z);*/
 	UpdateWorldView();
 }
 

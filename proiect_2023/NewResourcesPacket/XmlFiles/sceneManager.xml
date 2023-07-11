@@ -112,7 +112,7 @@
 				<z>0</z>
 			</up>
 			<translationSpeed>100</translationSpeed>
-			<rotationSpeed>4.3</rotationSpeed>
+			<rotationSpeed>2.3</rotationSpeed>
 			<fov>45</fov>
 			<near>0.2</near>
 			<far>5000</far>
@@ -136,7 +136,7 @@
 				<z>0</z>
 			</up>
 			<translationSpeed>100</translationSpeed>
-			<rotationSpeed>4.3</rotationSpeed>
+			<rotationSpeed>2.3</rotationSpeed>
 			<fov>45</fov>
 			<near>0.2</near>
 			<far>5000</far>
@@ -160,7 +160,7 @@
 				<z>0</z>
 			</up>
 			<translationSpeed>100</translationSpeed>
-			<rotationSpeed>4.3</rotationSpeed>
+			<rotationSpeed>2.3</rotationSpeed>
 			<fov>45</fov>
 			<near>0.2</near>
 			<far>5000</far>
@@ -184,7 +184,7 @@
 				<z>0</z>
 			</up>
 			<translationSpeed>100</translationSpeed>
-			<rotationSpeed>4.3</rotationSpeed>
+			<rotationSpeed>2.3</rotationSpeed>
 			<fov>45</fov>
 			<near>0.2</near>
 			<far>5000</far>

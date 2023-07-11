@@ -1129,7 +1129,6 @@ void SceneManager::Draw()
 					ResourceManager::GetInstance()->LoadModel(object.second->GetModelId())->GetCoordSys()
 				);
 			}
-
 			if (object.second->GetType() == "terrain")
 				((TerrainObject*)object.second)->DrawDebugMode();
 			if (object.second->GetType() == "skybox")

@@ -23,6 +23,19 @@ struct HitBox {
 	HitBox() : vMin(Vector3()), vMax(Vector3()), vbold(0), ibold(0), nrVertices(0), nrIndices(0) {}
 };
 
+struct Normal {
+	Vector3 vMin;
+	Vector3 vMax;
+	GLuint vbold;
+	GLuint ibold;
+	GLuint nrVertices;
+	GLuint nrIndices;
+	vector<Vertex> vertices;
+	vector<GLuint> indices;
+
+	Normal() : vMin(Vector3()), vMax(Vector3()), vbold(0), ibold(0), nrVertices(0), nrIndices(0) {}
+};
+
 struct CoordSys {
 	Vector3 oxColor;
 	Vector3 oyColor;
@@ -142,10 +155,12 @@ private:
 	vector<GLuint> indices;
 	vector<GLuint> wiredIndices;
 	HitBox* hitbox;
+	Normal* normals;
 	CoordSys* coordSys;
 
 	void LoadVertexData();
 	void LoadHitBoxData(Vector3& col);
+	void LoadNormalsData();
 	void LoadVerticesIndices();
 	void LoadWiredIndices();
 	void LoadCoordSys();
@@ -160,6 +175,7 @@ public:
 		nrIndices(0),
 		nrWiredIndices(0),
 		hitbox(new HitBox()),
+		normals(new Normal()),
 		coordSys(new CoordSys()) {}
 
 	Model(ModelResource* resource) :
@@ -171,6 +187,7 @@ public:
 		nrIndices(0),
 		nrWiredIndices(0),
 		hitbox(new HitBox),
+		normals(new Normal()),
 		coordSys(new CoordSys()) {}
 
 	~Model() {}
@@ -190,6 +207,7 @@ public:
 	vector<GLuint>	GetIndices()		{ return this->indices; }
 	vector<GLuint>	GetWiredIndices()	{ return this->wiredIndices; }
 	HitBox*			GetHitbox()			{ return this->hitbox; }
+	Normal*			GetNormal()			{ return this->normals; }
 	CoordSys*		GetCoordSys()		{ return this->coordSys; }
 
 	// Show structure data

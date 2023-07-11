@@ -32,7 +32,10 @@ public:
 		zNear(0.1f),
 		zFar(2000.0f),
 		fov(30.0f),
-		projMatrix(Matrix().SetPerspective(30.0f, 1.0f, 0.1f, 500.0f)) {}
+		projMatrix(Matrix().SetPerspective(30.0f, 1.0f, 0.1f, 500.0f)),
+		xAxis(Vector3(1.0f, 0.0f, 0.0f)),
+		yAxis(Vector3(0.0f, 1.0f, 0.0f)),
+		zAxis(Vector3(0.0f, 0.0f, 1.0f)) {}
 
 	Camera(
 		Vector3 _position,
@@ -47,7 +50,10 @@ public:
 		up(_up),
 		moveSpeed(_moveSpeed),
 		rotateSpeed(_rotateSpeed),
-		projMatrix(_projMatrix)
+		projMatrix(_projMatrix),
+		xAxis(Vector3(1.0f, 0.0f, 0.0f)),
+		yAxis(Vector3(0.0f, 1.0f, 0.0f)),
+		zAxis(Vector3(0.0f, 0.0f, 1.0f))
 	{
 		UpdateWorldView();
 	}

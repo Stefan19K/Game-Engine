@@ -74,6 +74,24 @@ void Model::LoadHitBoxData(Vector3& col)
 	};
 }
 
+void Model::LoadNormalsData()
+{
+	normals->nrVertices = nrVertices * 2;
+	normals->vertices = vector<Vertex>(normals->nrVertices);
+	for (int i = 0; i < nrVertices; ++i) {
+		normals->vertices[i * 2].pos = vertices[i].pos;
+		normals->vertices[i * 2 + 1].pos = vertices[i].pos + vertices[i].norm * 5; // make the normals more clear
+
+		// Set up yellow as default color.
+		normals->vertices[i * 2].col = Vector3(1.0f, 1.0f, 0.0f);
+		normals->vertices[i * 2 + 1].col = Vector3(1.0f, 1.0f, 0.0f);
+	}
+
+	normals->nrIndices = normals->nrVertices;
+	for (int i = 0; i < normals->nrVertices; ++i)
+		normals->indices.push_back(i);
+}
+
 void Model::LoadVerticesIndices()
 {
 	std::string line;
@@ -200,6 +218,7 @@ void Model::Load(Vector3& col)
 {
 	LoadVertexData();
 	LoadHitBoxData(col);
+	LoadNormalsData();
 
 	// buffer object
 	glGenBuffers(1, &vbold);
@@ -230,6 +249,19 @@ void Model::Load(Vector3& col)
 	glGenBuffers(1, &hitbox->ibold);
 	glBindBuffer(GL_ARRAY_BUFFER, hitbox->ibold);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(hitbox->indices[0]) * hitbox->nrIndices, hitbox->indices.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// Normals object
+	// buffer object
+	glGenBuffers(1, &normals->vbold);
+	glBindBuffer(GL_ARRAY_BUFFER, normals->vbold);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(normals->vertices[0]) * normals->nrVertices, normals->vertices.data(), GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	// index object
+	glGenBuffers(1, &normals->ibold);
+	glBindBuffer(GL_ARRAY_BUFFER, normals->ibold);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(normals->indices[0]) * normals->nrIndices, normals->indices.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
