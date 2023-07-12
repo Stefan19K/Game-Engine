@@ -6,10 +6,7 @@
 	<defaultScreenSize>
 		<width>960</width>
 		<height>720</height>
-		<!--
-		se mai poate pune si:
-		<fullscreen />
-		-->
+		<fullscreen>false</fullscreen>
 	</defaultScreenSize>
 	<backgroundColor>
 		<r>0.5</r>
@@ -79,6 +76,10 @@
 			<action>SWITCH_DEBUG_MODE</action>
 		</control>
 		<control>
+			<key>t</key>
+			<action>TERMINAL_MODE</action>
+		</control>
+		<control>
 			<!--Right arrow de pe tastatura-->
 			<key>'</key>
 			<action>NEXT_CAMERA</action>
@@ -87,6 +88,11 @@
 			<!--Left arrow de pe tastatura-->
 			<key>%</key>
 			<action>PREV_CAMERA</action>
+		</control>
+		<control>
+			<!--Left arrow de pe tastatura-->
+			<key>27</key>
+			<action>EXIT</action>
 		</control>
 		<!-- adaugati restul -->
 	</controls>

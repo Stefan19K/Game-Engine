@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "ResourceManager/ResourceManager.h"
 #include "SceneManager/SceneManager.h"
+#include "DebugManager/DebugManager.h"
 #include "Vertex.h"
 #include "Shaders.h"
 #include <conio.h>
@@ -18,36 +19,18 @@
 
 using namespace resourceManager;
 using namespace sceneManager;
+using namespace debugManager;
 
-constexpr float c_PI{ 3.1415f };
-constexpr double c_min_interval{0.05};
-
-GLuint vboId1;
-GLuint vboId2;
-GLuint vboId3;
-GLuint vboId4;
-GLuint textureId;
-Shaders myShaders;
-float angle{ 0.0f };
-float step{ c_PI / 10.0f };
-Camera cam = Camera();
-Matrix matrix;
-unsigned int verticesCount{};
-unsigned int indicesCount{};
-std::vector<Vertex>vertices;
-std::vector<unsigned short>indices;
-bool wired = false;
-GLenum mode = GL_TRIANGLES;
 float cntDeltaTime = 0;
 float maxLevel = 0.025f;
 
 void Mouse(ESContext* esContext, MouseButton button, MouseEvent event, Vector2 coord);
 
 int Init ( ESContext *esContext )
-{
+{	
 	ResourceManager::GetInstance()->Init();
 	SceneManager::GetInstance()->Init();
-	
+
 	return 0;	
 }
 
@@ -74,27 +57,7 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 
 void Mouse(ESContext* esContext, MouseButton button, MouseEvent event, float x, float y)
 {
-	switch (button)
-	{
-	case LEFT:
-		if (x < Globals::screenWidth / 2.0f) {
-			angle += step;
-			if (angle > 2 * c_PI)
-				angle -= 2 * c_PI;
-			matrix.SetRotationZ(angle);
-		}
-		else {
-			angle -= step;
-			if (angle < 0)
-				angle += 2 * c_PI;
-			matrix.SetRotationZ(angle);
-		}
-		break;
-	case RIGHT:
-		break;
-	default:
-		break;
-	}
+	
 }
 
 void CleanUp()
@@ -114,7 +77,15 @@ int _tmain(int argc, _TCHAR* argv[])
 
     esInitContext ( &esContext );
 
-	esCreateWindow ( &esContext, "Hello Triangle", Globals::screenWidth, Globals::screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
+	SceneManager::GetInstance()->LoadScreenData();
+
+	esCreateWindow ( 
+		&esContext, 
+		SceneManager::GetInstance()->GetName().c_str(),
+		SceneManager::GetInstance()->GetWidth(), 
+		SceneManager::GetInstance()->GetHeight(),
+		ES_WINDOW_RGB | ES_WINDOW_DEPTH
+	);
 
 	if ( Init ( &esContext ) != 0 )
 		return 0;
