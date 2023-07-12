@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DebugManager\DebugManager.cpp" />
     <ClCompile Include="NewTrainingFramework.cpp" />
     <ClCompile Include="ResourceManager\ResourceManager.cpp" />
     <ClCompile Include="Resources.cpp" />
@@ -181,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DebugManager\DebugManager.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="rapidxml.hpp" />
     <ClInclude Include="rapidxml_iterators.hpp" />

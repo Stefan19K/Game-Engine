@@ -135,6 +135,9 @@ public:
 
 	void Draw(Camera* cam);
 	void DrawDebugMode();
+	void DrawWired();
+	void DrawHitboxes();
+	void DrawNormals();
 	void DrawCoordSystem(CoordSys* coordSys);
 	void Update(float deltaTimeSeconds);
 	void UpdateTranformationMatrix();

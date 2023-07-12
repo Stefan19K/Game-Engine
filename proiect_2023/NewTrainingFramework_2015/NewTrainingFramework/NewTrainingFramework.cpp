@@ -55,6 +55,12 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 	SceneManager::GetInstance()->Key(key, bIsPressed);
 }
 
+void KeyPress(ESContext* esContext, unsigned char key)
+{
+	SceneManager::GetInstance()->KeyPress(key);
+	DebugManager::GetInstance()->KeyPress(key);
+}
+
 void Mouse(ESContext* esContext, MouseButton button, MouseEvent event, float x, float y)
 {
 	
@@ -93,6 +99,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	esRegisterDrawFunc ( &esContext, Draw );
 	esRegisterUpdateFunc ( &esContext, Update );
 	esRegisterKeyFunc ( &esContext, Key);
+	esRegisterKeyPressFunc(&esContext, KeyPress);
 	esRegisterMouseFunc(&esContext, Mouse);
 
 	esMainLoop ( &esContext );

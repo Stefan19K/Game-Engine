@@ -5,8 +5,6 @@
 #include <string>
 #include <map>
 #include <algorithm>    // std::sort
-
-using namespace std;
 using namespace rapidxml;
 
 namespace sceneManager {
@@ -68,8 +66,10 @@ namespace sceneManager {
 		ROTATE_CAMERA_POSITIVE_Y,
 		ROTATE_CAMERA_NEGATIVE_Y,
 		SWITCH_DEBUG_MODE,
+		TERMINAL_MODE,
 		NEXT_CAMERA,
 		PREV_CAMERA,
+		EXIT,
 		ACTION_COUNT
 	};
 
@@ -115,6 +115,7 @@ namespace sceneManager {
 		void LoadDebugSettings(xml_node<>* root);
 
 		void DrawCoordSystem(CoordSys* coordSys);
+		template <class T> void DrawObjectDebugMode(T *object);
 
 		Action GetActionType(const string& str);
 		TrajectoryType GetTrajectoryType(const string& str);
@@ -122,10 +123,12 @@ namespace sceneManager {
 
 	public:
 		static SceneManager* GetInstance();
+		void LoadScreenData();
 		void Init(); //initializari - pot fi si in constructor
 		void Draw();
 		void Update(GLfloat deltaTimeSeconds);
 		void Key(unsigned char key, bool bIsPressed);
+		void KeyPress(unsigned char key);
 
 		// Getters
 		string	GetName()					{ return prjName; }

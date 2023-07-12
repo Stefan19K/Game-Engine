@@ -37,6 +37,9 @@
     <Filter Include="Source Files\SceneObject\FireObject">
       <UniqueIdentifier>{20495dba-b597-4cdf-94a8-b62e34a9934d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DebugManager">
+      <UniqueIdentifier>{24e469f6-4d49-43cb-ab76-37decbdb8e1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NewTrainingFramework.cpp">
@@ -71,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="SceneObject\FireObject\FireObject.cpp">
       <Filter>Source Files\SceneObject\FireObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugManager\DebugManager.cpp">
+      <Filter>Source Files\DebugManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="SceneObject\FireObject\FireObject.h">
       <Filter>Source Files\SceneObject\FireObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugManager\DebugManager.h">
+      <Filter>Source Files\DebugManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

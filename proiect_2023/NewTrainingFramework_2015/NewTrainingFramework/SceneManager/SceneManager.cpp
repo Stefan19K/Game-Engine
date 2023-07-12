@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneManager.h"
 #include "ResourceManager/ResourceManager.h"
+#include "DebugManager/DebugManager.h"
 #include "SceneObject/TerrainObject/TerrainObject.h"
 #include "SceneObject/SkyBoxObject/SkyBoxObject.h"
 #include "SceneObject/FireObject/FireObject.h"
@@ -8,6 +9,7 @@
 
 using namespace sceneManager;
 using namespace resourceManager;
+using namespace debugManager;
 
 SceneManager* SceneManager::smInstance = nullptr;
 
@@ -22,16 +24,6 @@ void SceneManager::ReadConfigFile()
 	doc.parse<0>(&content[0]);
 	xml_node<>* pRoot = doc.first_node();
 	xml_node<>* node;
-
-	node = pRoot->first_node("gameName");
-	if (node) {
-		LoadProjectName(node);
-	}
-
-	node = pRoot->first_node("defaultScreenSize");
-	if (node) {
-		LoadScreenSize(node);
-	}
 
 	node = pRoot->first_node("backgroundColor");
 	if (node) {
@@ -71,6 +63,29 @@ void SceneManager::ReadConfigFile()
 
 	node = pRoot->first_node("debugSettings");
 	LoadDebugSettings(node);
+}
+
+void SceneManager::LoadScreenData()
+{
+	xml_document<> doc;
+	ifstream file(c_pathToXmlFile);
+	stringstream buffer;
+	buffer << file.rdbuf();
+	file.close();
+	string content(buffer.str());
+	doc.parse<0>(&content[0]);
+	xml_node<>* pRoot = doc.first_node();
+	xml_node<>* node;
+
+	node = pRoot->first_node("gameName");
+	if (node) {
+		LoadProjectName(node);
+	}
+
+	node = pRoot->first_node("defaultScreenSize");
+	if (node) {
+		LoadScreenSize(node);
+	}
 }
 
 void SceneManager::LoadProjectName(xml_node<>* root)
@@ -146,7 +161,13 @@ void SceneManager::LoadControls(xml_node<>* root)
 		string action;
 
 		node = pNode->first_node("key");
-		key = node->value();
+		int aux = atoi(node->value());
+		if (aux == 0)
+			key = node->value();
+		else {
+			key = new char;
+			memcpy(key, &aux, 1);
+		}
 
 		node = pNode->first_node("action");
 		action = node->value();
@@ -1003,6 +1024,30 @@ void SceneManager::DrawCoordSystem(CoordSys* coordSys)
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+template <class T> void SceneManager::DrawObjectDebugMode(T *object)
+{
+	UINT16 flag;
+
+	flag = DebugManager::GetInstance()->GetWiredFlag();
+	if (flag)
+		((T*)object)->DrawWired();
+
+	flag = DebugManager::GetInstance()->GetHitboxesFlag();
+	if (flag)
+		((T*)object)->DrawHitboxes();
+
+	flag = DebugManager::GetInstance()->GetNormalsFlag();
+	if (flag)
+		((T*)object)->DrawNormals();
+
+	flag = DebugManager::GetInstance()->GetObjCoordSysFlag();
+	if (flag)
+		((T*)object)->DrawCoordSystem(
+			ResourceManager::GetInstance()->LoadModel(object->GetModelId())->GetCoordSys()
+		);
+
+}
+
 Action SceneManager::GetActionType(const string& str)
 {
 	// Move camera constants
@@ -1047,12 +1092,20 @@ Action SceneManager::GetActionType(const string& str)
 	if (str == "SWITCH_DEBUG_MODE")
 		return SWITCH_DEBUG_MODE;
 
+	// terminal mode
+	if (str == "TERMINAL_MODE")
+		return TERMINAL_MODE;
+
 	// Go through cameras
 	if (str == "NEXT_CAMERA")
 		return NEXT_CAMERA;
 
 	if (str == "PREV_CAMERA")
 		return PREV_CAMERA;
+
+	// Exit game
+	if (str == "EXIT")
+		return EXIT;
 }
 
 TrajectoryType sceneManager::SceneManager::GetTrajectoryType(const string& str)
@@ -1123,18 +1176,14 @@ void SceneManager::Draw()
 		DrawCoordSystem(this->coordSys);
 
 		for (const auto& object : objects) {
-			if (object.second->GetType() == "normal") {
-				object.second->DrawDebugMode();
-				object.second->DrawCoordSystem(
-					ResourceManager::GetInstance()->LoadModel(object.second->GetModelId())->GetCoordSys()
-				);
-			}
+			if (object.second->GetType() == "normal")
+				DrawObjectDebugMode<SceneObject>(object.second);
 			if (object.second->GetType() == "terrain")
-				((TerrainObject*)object.second)->DrawDebugMode();
+				DrawObjectDebugMode<TerrainObject>((TerrainObject*)object.second);
 			if (object.second->GetType() == "skybox")
-				((SkyBoxObject*)object.second)->DrawDebugMode();
+				DrawObjectDebugMode<SkyBoxObject>((SkyBoxObject*)object.second);
 			if (object.second->GetType() == "fire")
-				((FireObject*)object.second)->DrawDebugMode();
+				DrawObjectDebugMode<FireObject>((FireObject*)object.second);
 		}
 	}
 
@@ -1163,7 +1212,6 @@ void SceneManager::Draw()
 				((FireObject*)object.second)->DrawDebugMode();
 		}
 	}*/
-	
 }
 
 void SceneManager::Update(GLfloat deltaTimeSeconds)
@@ -1183,8 +1231,13 @@ void SceneManager::Update(GLfloat deltaTimeSeconds)
 
 void SceneManager::Key(unsigned char key, bool bIsPressed)
 {
-
 	if (bIsPressed) {
+
+		if (DebugManager::GetInstance()->GetTerminalMode()) {
+			cout << "\n";
+			DebugManager::GetInstance()->ClearTBit();
+		}
+
 		Action action;
 		
 		if (this->controls.find(key) == controls.end())
@@ -1230,21 +1283,55 @@ void SceneManager::Key(unsigned char key, bool bIsPressed)
 		case sceneManager::ROTATE_CAMERA_NEGATIVE_Y:
 			this->cameras.at(this->cameraIds[activeCameraId])->rotateOY(-1.0f);
 			break;
-		case sceneManager::SWITCH_DEBUG_MODE:
-			this->debugMode ^= 1;
-			break;
-		case sceneManager::NEXT_CAMERA:
-			this->activeCameraId = (this->activeCameraId + 1) % this->cameraIds.size();
-			break;
-		case sceneManager::PREV_CAMERA:
-			if (this->activeCameraId == 0)
-				this->activeCameraId = this->cameraIds.size();
-			this->activeCameraId--;
-			break;
 		case sceneManager::ACTION_COUNT:
 			break;
 		default:
 			break;
 		}
+	}
+}
+
+void SceneManager::KeyPress(unsigned char key)
+{
+	Action action;
+
+	if (this->controls.find(key) == controls.end())
+		return;
+	else
+		action = this->controls.at(key);
+
+	switch (action)
+	{
+	case sceneManager::TERMINAL_MODE:\
+		if (this->debugMode)
+			DebugManager::GetInstance()->SwitchTerminalMode();
+		break;
+	case sceneManager::EXIT:
+		exit(0);
+	default:
+		break;
+	}
+
+	UINT16 mode = DebugManager::GetInstance()->GetTerminalMode();
+	if (mode)
+		return;
+
+	switch (action)
+	{
+	case sceneManager::SWITCH_DEBUG_MODE:
+		this->debugMode ^= 1;
+		break;
+	case sceneManager::NEXT_CAMERA:
+		this->activeCameraId = (this->activeCameraId + 1) % this->cameraIds.size();
+		break;
+	case sceneManager::PREV_CAMERA:
+		if (this->activeCameraId == 0)
+			this->activeCameraId = this->cameraIds.size();
+		this->activeCameraId--;
+		break;
+	case sceneManager::ACTION_COUNT:
+		break;
+	default:
+		break;
 	}
 }

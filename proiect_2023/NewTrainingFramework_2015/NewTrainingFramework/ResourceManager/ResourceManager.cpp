@@ -260,8 +260,6 @@ ResourceManager* ResourceManager::GetInstance()
 void ResourceManager::Init()
 {
 	ReadConfigFile();
-	/*for (auto const& key : textureResources)
-		key.second->print();*/
 }
 
 void resourceManager::ResourceManager::LoadData(const GLuint id, string& resource, Vector3& col)

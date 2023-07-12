@@ -489,6 +489,162 @@ void SceneObject::DrawDebugMode()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+void SceneObject::DrawWired()
+{
+	Model* model = ResourceManager::GetInstance()->LoadModel(modelId);
+	Shader* shader = ResourceManager::GetInstance()->LoadShader(0);
+	Shaders* shdr = shader->GetShader();
+
+	glUseProgram(shader->GetShader()->program);
+
+	glBindBuffer(GL_ARRAY_BUFFER, model->GetVbold());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->GetWiredIbold());
+
+	if (shdr->positionAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->positionAttribute);
+		glVertexAttribPointer(shdr->positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	}
+
+	if (shdr->colorAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->colorAttribute);
+		glVertexAttribPointer(shdr->colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Vector3));
+	}
+
+	/*if (shdr->normAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->normAttribute);
+		glVertexAttribPointer(shdr->normAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 2));
+	}*/
+
+	if (shdr->modelUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->modelUniform, 1, 0, (GLfloat*)this->matrix.m);
+	}
+
+	if (shdr->viewUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->viewUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetViewMatrix().m);
+	}
+
+	if (shdr->projectionUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->projectionUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix().m);
+	}
+
+	glDrawElements(GL_LINES, model->GetNrWiredIndices(), GL_UNSIGNED_INT, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void SceneObject::DrawHitboxes()
+{
+	Model* model = ResourceManager::GetInstance()->LoadModel(modelId);
+	Shader* shader = ResourceManager::GetInstance()->LoadShader(0);
+	Shaders* shdr = shader->GetShader();
+
+	glUseProgram(shader->GetShader()->program);
+
+	glBindBuffer(GL_ARRAY_BUFFER, model->GetHitbox()->vbold);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->GetHitbox()->ibold);
+
+	if (shdr->positionAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->positionAttribute);
+		glVertexAttribPointer(shdr->positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	}
+
+	if (shdr->colorAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->colorAttribute);
+		glVertexAttribPointer(shdr->colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Vector3));
+	}
+
+	/*if (shdr->normAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->normAttribute);
+		glVertexAttribPointer(shdr->normAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 2));
+	}*/
+
+	if (shdr->modelUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->modelUniform, 1, 0, (GLfloat*)this->matrix.m);
+	}
+
+	if (shdr->viewUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->viewUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetViewMatrix().m);
+	}
+
+	if (shdr->projectionUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->projectionUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix().m);
+	}
+
+	glDrawElements(GL_LINES, model->GetHitbox()->nrIndices, GL_UNSIGNED_INT, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void SceneObject::DrawNormals()
+{
+	Model* model = ResourceManager::GetInstance()->LoadModel(modelId);
+	Shader* shader = ResourceManager::GetInstance()->LoadShader(0);
+	Shaders* shdr = shader->GetShader();
+
+	glUseProgram(shader->GetShader()->program);
+
+	glBindBuffer(GL_ARRAY_BUFFER, model->GetNormal()->vbold);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, model->GetNormal()->ibold);
+
+	if (shdr->positionAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->positionAttribute);
+		glVertexAttribPointer(shdr->positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	}
+
+	if (shdr->colorAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->colorAttribute);
+		glVertexAttribPointer(shdr->colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(Vector3));
+	}
+
+	/*if (shdr->normAttribute != -1)
+	{
+		glEnableVertexAttribArray(shdr->normAttribute);
+		glVertexAttribPointer(shdr->normAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3) * 2));
+	}*/
+
+	if (shdr->modelUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->modelUniform, 1, 0, (GLfloat*)this->matrix.m);
+	}
+
+	if (shdr->viewUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->viewUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetViewMatrix().m);
+	}
+
+	if (shdr->projectionUniform != -1)
+	{
+		glUniformMatrix4fv(shdr->projectionUniform, 1, 0,
+			(GLfloat*)SceneManager::GetInstance()->GetActiveCamera()->GetProjectionMatrix().m);
+	}
+
+	glDrawElements(GL_LINES, model->GetNormal()->nrIndices, GL_UNSIGNED_INT, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
 void SceneObject::DrawCoordSystem(CoordSys* coordSys)
 {
 	Model* model = ResourceManager::GetInstance()->LoadModel(modelId);
