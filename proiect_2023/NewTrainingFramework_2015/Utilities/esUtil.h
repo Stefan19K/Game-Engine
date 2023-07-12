@@ -55,6 +55,7 @@ public:
    /// Callbacks
    void (ESCALLBACK *drawFunc) ( ESContext * );
    void (ESCALLBACK *keyFunc) ( ESContext *, unsigned char, bool );
+   void (ESCALLBACK* keyPressFunc) (ESContext*, unsigned char);
    void (ESCALLBACK *updateFunc) ( ESContext *, float deltaTime );
    void (ESCALLBACK* mouseFunc) (ESContext*, MouseButton, MouseEvent, float, float);
 };
@@ -110,6 +111,9 @@ void ESUTIL_API esRegisterUpdateFunc ( ESContext *esContext, void (ESCALLBACK *u
 //
 void ESUTIL_API esRegisterKeyFunc ( ESContext *esContext, 
                                     void (ESCALLBACK *drawFunc) ( ESContext*, unsigned char, bool ) );
+
+void ESUTIL_API esRegisterKeyPressFunc(ESContext* esContext,
+	void (ESCALLBACK* drawFunc) (ESContext*, unsigned char));
 
 void ESUTIL_API esRegisterMouseFunc(ESContext* esContext,
     void (ESCALLBACK* mouseFunc) (ESContext*, MouseButton, MouseEvent, float, float));

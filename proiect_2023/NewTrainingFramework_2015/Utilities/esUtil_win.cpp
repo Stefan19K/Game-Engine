@@ -3,7 +3,8 @@
 #include "esUtil.h"
 #include "windowsx.h"
 
-
+// Array used to check if a key was pressed;
+int keys[256];
 
 // Main window procedure
 LRESULT WINAPI ESWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam ) 
@@ -34,14 +35,21 @@ LRESULT WINAPI ESWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam
 		  {
 			  ESContext *esContext = (ESContext*)(LONG_PTR) GetWindowLongPtr ( hWnd, GWL_USERDATA );
 
-			  if ( esContext && esContext->keyFunc )
-				  esContext->keyFunc ( esContext, (unsigned char) wParam, true );
+              if (keys[wParam] == 1 && esContext && esContext->keyFunc) {
+                  esContext->keyFunc(esContext, (unsigned char)wParam, true);
+              } else if (wParam < 256 && esContext && esContext->keyPressFunc) {
+                  keys[wParam] = 1;
+                  esContext->keyPressFunc(esContext, (unsigned char)wParam);
+              }		  
 		  }
 		  break;
 
 	  case WM_KEYUP:
 		  {
 			  ESContext *esContext = (ESContext*)(LONG_PTR) GetWindowLongPtr ( hWnd, GWL_USERDATA );
+
+              if (wParam < 256)
+                  keys[wParam] = 0;
 
 			  if ( esContext && esContext->keyFunc )
 				  esContext->keyFunc ( esContext, (unsigned char) wParam, false );

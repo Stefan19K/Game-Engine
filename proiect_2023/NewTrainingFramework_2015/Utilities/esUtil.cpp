@@ -176,6 +176,14 @@ void ESUTIL_API esRegisterKeyFunc ( ESContext *esContext,
    esContext->keyFunc = keyFunc;
 }
 
+//  esRegisterKeyPressFunc()
+
+void ESUTIL_API esRegisterKeyPressFunc(ESContext* esContext,
+    void (ESCALLBACK* keyPressFunc) (ESContext*, unsigned char))
+{
+    esContext->keyPressFunc = keyPressFunc;
+}
+
 //  esRegisterMouseFunc()
 
 void ESUTIL_API esRegisterMouseFunc(ESContext* esContext,
