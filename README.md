@@ -1,6 +1,6 @@
 # Game Engine
 
-https://imgur.com/a/DETZc8h - demo
+https://imgur.com/a/DETZc8h - demo 09.07.2023
 
 Update 12.07.2023:
 - modified ox rotation for camera (still not perfect)
